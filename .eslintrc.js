@@ -33,7 +33,7 @@ module.exports = {
     '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-unused-vars': [
-      'error',
+      'warn',
       {
         argsIgnorePattern: '^_',
         ignoreRestSiblings: true,

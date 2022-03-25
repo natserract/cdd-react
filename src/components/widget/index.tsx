@@ -2,15 +2,16 @@ import React from 'react'
 import styled from "styled-components";
 
 type WidgetRootProps = {
-  width?: number,
   variant?: "square" | "rounded",
+
+  // Used for custom/additional style
+  // @see: https://mui.com/system/the-sx-prop/
   sx?: Record<string, unknown>
 }
 
 const WidgetRoot = styled('div').withConfig<WidgetRootProps>({
-  displayName: 'WidgetRoot',
-})(({ theme, width, variant, sx }) => ({
-  width,
+  displayName: 'Widget',
+})(({ theme, variant, sx }) => ({
   background: theme.palette.background.paper,
   color: theme.palette.text.primary,
   boxShadow: theme.customShadows.widgetDark,
@@ -22,8 +23,6 @@ const WidgetRoot = styled('div').withConfig<WidgetRootProps>({
     borderRadius: theme.shape.borderRadius,
   }),
 
-  // Used for custom/additional style
-  // @see: https://mui.com/system/the-sx-prop/
   ...sx,
 }))
 
