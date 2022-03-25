@@ -1,9 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import FormInput from 'src/components/form/formInput';
 
 import logo from './assets/logo.svg';
 import './styles/App.css';
+import { cryptoRandomString } from './utils/random';
 
 function App() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -11,6 +13,9 @@ function App() {
     mode: 'onChange'
   })
 
+  useEffect(() => {
+    console.log('random', cryptoRandomString(5, undefined, "1I0O"))
+  }, [])
 
   return (
     <div className="App">

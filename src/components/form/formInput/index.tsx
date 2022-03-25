@@ -7,6 +7,8 @@ import {
     ControllerRenderProps,
 } from 'react-hook-form'
 
+import { StyledFormInput } from './styles'
+
 type BaseProps = {
     onChange: React.ChangeEventHandler<HTMLInputElement>;
     rules: Omit<
@@ -33,7 +35,7 @@ const FormInput: React.FC<FormInputProps> = (props) => {
     } = props
 
     const renderInput = (field: ControllerRenderProps<any, string>) => (
-        <input
+        <StyledFormInput
             required={required}
             onChange={(event) => {
                 if (onChangeProps && typeof onChangeProps === "function") {

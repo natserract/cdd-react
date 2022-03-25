@@ -20,6 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@types/styled-components": "^5.1.24",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.10.0",
