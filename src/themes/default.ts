@@ -39,7 +39,10 @@ const defaultTheme = {
     },
     text: {
       primary: '#4A4A4A',
+      textPrimary: "#536DFE",
       secondary: '#6E6E6E',
+      textSecondary: "#FF5C93",
+      error: "rgb(235, 0, 20)",
       hint: '#B9B9B9',
     },
     background: {
@@ -75,6 +78,9 @@ const defaultTheme = {
     h6: {
       fontSize: "1.142rem",
     },
+    body1: {
+      fontSize: "1rem",
+    }
   },
   shape: {
     borderRadius: '14px'

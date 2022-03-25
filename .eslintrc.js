@@ -32,6 +32,7 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': 'off',
     '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {

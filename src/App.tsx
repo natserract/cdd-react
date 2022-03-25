@@ -5,6 +5,7 @@ import Widget from 'src/components/widget'
 
 import './styles/App.css';
 import Stepper from 'src/components/stepper'
+import Typography from 'src/components/typography';
 
 import { cryptoRandomString } from './utils/random';
 
@@ -41,6 +42,10 @@ function App() {
           )
         })}
       </Stepper>
+
+      <Typography color='error' gutterBottom>
+        Hello
+      </Typography>
     </div>
   );
 }
