@@ -59,5 +59,3 @@ export function cryptoRandomString(len = 40, charSet = asciiChars, excludeChars 
     .map((pos: string) => charSetSplit[pos])
     .join('')
 }
-
-"".replace(/[a]/g, '-') //
