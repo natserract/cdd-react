@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import FormInput from 'src/components/form/formInput';
+import Widget from 'src/components/widget'
 
 import logo from './assets/logo.svg';
 import './styles/App.css';
@@ -36,6 +37,9 @@ function App() {
           control={control}
           name="name"
         />
+        <Widget width={500}>
+          Hello
+        </Widget>
       </header>
     </div>
   );

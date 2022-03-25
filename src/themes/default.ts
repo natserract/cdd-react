@@ -45,6 +45,7 @@ const defaultTheme = {
     background: {
       default: '#F6F7FF',
       light: '#F3F5FF',
+      paper: "#fff"
     },
   },
   customShadows: {
@@ -75,8 +76,11 @@ const defaultTheme = {
       fontSize: "1.142rem",
     },
   },
+  shape: {
+    borderRadius: '14px'
+  }
 }
 
 export {
-   defaultTheme
+  defaultTheme
 }
