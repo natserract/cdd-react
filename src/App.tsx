@@ -6,6 +6,7 @@ import Widget from 'src/components/widget'
 import './styles/App.css';
 import Stepper from 'src/components/stepper'
 import Typography from 'src/components/typography';
+import Button from 'src/components/button'
 
 import { cryptoRandomString } from './utils/random';
 
@@ -25,27 +26,9 @@ function App() {
 
   return (
     <div className="App">
-      <FormInput
-        control={control}
-        name="name"
-      />
-      <Widget>
-        Hello
-      </Widget>
-
-      <Stepper activeStep={activeState}>
-        {steps.map((label, index) => {
-          return (
-            <div key={label}>
-              <label htmlFor="label">{label}</label>
-            </div>
-          )
-        })}
-      </Stepper>
-
-      <Typography color='error' gutterBottom>
-        Hello
-      </Typography>
+      <Button onClick={(e) => console.log(e)}>
+        Contained
+      </Button>
     </div>
   );
 }
