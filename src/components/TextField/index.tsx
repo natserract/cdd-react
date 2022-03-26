@@ -39,14 +39,18 @@ const TextFieldLabel = styled.label`
   pointer-events: none;
 `
 
-const TextFieldHelper = styled(Typography)`
-  color: rgba(0, 0, 0, 0.6);
+const TextFieldHelper = styled(Typography) <{
+  isError?: boolean
+}>`
+  color: ${props => props.isError ? props.theme.palette.error.main : 'rgba(0, 0, 0, 0.6)'};
   font-weight: 400;
   font-size: .8rem;
   line-height: 1.66;
   text-align: left;
   margin: 5px 5px 0px;
   order: 3;
+  position: absolute;
+  bottom: -3px;
 `
 
 type TextFieldRootProps = {
@@ -59,21 +63,24 @@ type TextFieldRootProps = {
 
 const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   displayName: 'TextField',
-})(({ theme, variant, color, sx, startAdornment, endAdornment }) => ({
+})(({ theme, variant, color, isError: error, sx, startAdornment, endAdornment }) => ({
   borderRadius: 0,
   display: 'flex',
   lineHeight: '1.2em',
   border: 0,
   borderBottom: '1px solid rgba(0, 0, 0, 0.15)',
   paddingTop: 30,
+  fontWeight: 'bold',
 
   ...(variant === 'outlined' && {
     border: '1px solid rgba(0, 0, 0, 0.15)',
   }),
 
-  "&:hover:not([disabled], :focus)": {
-    borderColor: ' rgba(0, 0, 0, .25)'
-  },
+  ...(!error && {
+    "&:hover:not([disabled], :focus)": {
+      borderColor: ' rgba(0, 0, 0, .25)'
+    },
+  }),
 
   color: '#000',
   flex: '1 1 auto',
@@ -82,11 +89,23 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
 
   "&:focus": {
     outline: 0,
-    borderColor: theme.palette[color].main,
+    ...(!error && {
+      borderColor: theme.palette[color].main,
+    }),
   },
+  ...(error && {
+    borderColor: theme.palette.error.main,
+  }),
 
+  [`& + ${TextFieldLabel}`]: {
+    ...(error && {
+      color: theme.palette.error.main,
+    })
+  },
   [`&:focus + ${TextFieldLabel}`]: {
-    color: theme.palette[color].main,
+    ...(!error && {
+      color: theme.palette[color].main,
+    }),
   },
   [`&:focus + ${TextFieldLabel}, &.focus + ${TextFieldLabel}`]: {
     opacity: 1,
@@ -106,18 +125,24 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   ...sx,
 }))
 
+type TextFieldAdornmentRootProps = {
+  active?: boolean;
+  color?: "primary" | "secondary" | "success" | "error" | "info",
+  isError?: boolean;
+} & Pick<TextFieldRootProps, 'startAdornment' | 'endAdornment'>
+
 const TextFieldAdornmentRoot =
-  styled('div')<Pick<
-    TextFieldRootProps,
-    'startAdornment' | 'endAdornment'
-  > & {
-    active?: boolean;
-    color?: "primary" | "secondary" | "success" | "error" | "info"
-  }>(({ theme, startAdornment, endAdornment, active, color }) => ({
+  styled('div')<TextFieldAdornmentRootProps>(({ theme, startAdornment, endAdornment, active, color, isError }) => ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
-    color: active ? theme.palette[color].main : 'rgba(0, 0, 0, 0.25)',
+
+    ...(!isError && {
+      color: active ? theme.palette[color].main : 'rgba(0, 0, 0, 0.25)',
+    }),
+    ...(isError && {
+      color: theme.palette.error.main
+    }),
 
     ...(startAdornment && {
       left: '2.7em'
@@ -138,52 +163,76 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
     placeholder,
     label,
     helperText,
+    errorMessage,
     className,
     onChange: onChangeProps,
     startAdornment,
     endAdornment,
     color = 'primary',
+    isError,
+    errors,
+    activeIconOnChange,
     ...other
   } = props
+
+  let isFormError = false
+
+  if (errors && Object.prototype.hasOwnProperty.call(errors, name)) {
+    isFormError = true
+  }
 
   const rootRef = useRef(null)
   const handleRef = useForkRef(ref, rootRef)
 
   const [isActive, setIsActive] = useState(false)
   const [classes, setClasses] = useState('')
+  const [activeIconOnChangeState, setActiveIconOnChangeState] = useState(false)
 
   // Call hook passing in the ref and a function to call on outside click
-  useOnClickOutside(rootRef, () => setIsActive(false));
+  useOnClickOutside(rootRef, () => {
+    setIsActive(false)
+    setActiveIconOnChangeState(false)
+  });
 
   const handleChange = useCallback((e) => {
     const value = e.target.value
 
     if (value) {
-      setClasses('focus')
+      setClasses('focus') // Triggering focus by class
+      setActiveIconOnChangeState(true) // Show icon when value changed
     } else {
       setClasses('')
     }
 
+    // Pass onChange function
     if (onChangeProps && typeof onChangeProps === "function") {
       onChangeProps(e)
     }
   }, [onChangeProps])
 
-  const renderStartAdornment = startAdornment && (
+  const isHasStartAdornment = startAdornment && !activeIconOnChange
+  const isHasStartAdornmentOnChange = startAdornment && activeIconOnChange && activeIconOnChangeState
+
+  const renderStartAdornment = (isHasStartAdornmentOnChange || isHasStartAdornment) && (
     <TextFieldAdornmentRoot
       active={isActive}
       color={color}
+      isError={isFormError}
       startAdornment={startAdornment}
     >
       {startAdornment}
     </TextFieldAdornmentRoot>
   )
 
-  const renderEndAdornment = endAdornment && (
+  const isHasEndAdornment = endAdornment && !activeIconOnChange
+  const isHasEndAdornmentOnChange = endAdornment && activeIconOnChange && activeIconOnChangeState
+
+  const renderEndAdornment = (isHasEndAdornmentOnChange || isHasEndAdornment) && (
     <TextFieldAdornmentRoot
       active={isActive}
       color={color}
       endAdornment={endAdornment}
+      isError={isFormError}
     >
       {endAdornment}
     </TextFieldAdornmentRoot>
@@ -197,6 +246,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
         color={color}
         control={control}
         endAdornment={endAdornment}
+        isError={isFormError}
         name={name}
         startAdornment={startAdornment}
         onChange={handleChange}
@@ -208,10 +258,11 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
         {placeholder || label}
       </TextFieldLabel>
 
-      {helperText && (
+      {(helperText || (isFormError && errorMessage)) && (
         <TextFieldHelper
-          children={helperText}
+          children={helperText || (isFormError && errorMessage)}
           component='p'
+          isError={isFormError}
         />
       )}
 

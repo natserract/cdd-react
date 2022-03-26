@@ -9,6 +9,7 @@ import Typography from 'src/components/Typography';
 import Button from 'src/components/Button'
 import Checkbox from 'src/components/Checkbox'
 import CheckOutlined from '@ant-design/icons/CheckOutlined'
+import CloseOutlined from '@ant-design/icons/CloseOutlined'
 import TextField from 'src/components/TextField';
 
 import { cryptoRandomString } from './utils/random';
@@ -20,15 +21,20 @@ function App() {
   const [checkedState, setCheckedState] = useState(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { control, formState: { errors: _errors, ...formState }, getValues } = useForm({
-    mode: 'onChange'
+  const { control, watch, trigger, formState: { errors, ...formState }, getValues, getFieldState } = useForm({
+    mode: 'onChange',
   })
-
+  const watchFields = watch();
 
   useEffect(() => {
     // console.log('random', cryptoRandomString(5, undefined, "1I0O"))
-    console.log('formState', formState)
-  }, [formState, getValues])
+  }, [watchFields])
+
+  console.log('errors', errors)
+  // console.log('watchFields', watchFields)
+  // console.log('getFieldState', getFieldState('name'))
+  console.log('formState', control)
+  const [showIcon, setShowIcon] = useState(false)
 
   return (
     <div className="App">
@@ -52,10 +58,19 @@ function App() {
       </Button> */}
 
       <TextField
+        color='success'
         control={control}
+        endAdornment={errors.name ? <CloseOutlined /> : <CheckOutlined />}
+        errorMessage='Error!'
+        errors={errors}
         label="Name"
         name='name'
+        rules={{
+          required: true
+        }}
         variant='outlined'
+        activeIconOnChange
+        required
       />
     </div>
   );

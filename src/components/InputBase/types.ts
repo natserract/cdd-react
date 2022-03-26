@@ -26,4 +26,12 @@ export type InputBaseProps = OptionalProps & {
     color?: "primary" | "secondary" | "success" | "error" | "info"
     variant?: "outlined" | "filled" | "standard"
     sx?: React.CSSProperties
+
+    // Errors
+    isError?: boolean
+    errors?: { [x: string]: Any }
+    errorMessage?: string;
+
+    // Icon
+    activeIconOnChange?: boolean;
 }
