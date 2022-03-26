@@ -9,6 +9,7 @@ import Typography from 'src/components/Typography';
 import Button from 'src/components/Button'
 import Checkbox from 'src/components/Checkbox'
 import CheckOutlined from '@ant-design/icons/CheckOutlined'
+import TextField from 'src/components/TextField';
 
 import { cryptoRandomString } from './utils/random';
 
@@ -35,7 +36,7 @@ function App() {
       <br />
       <br />
 
-      <Checkbox
+      {/* <Checkbox
         checked={checkedState}
         color='success'
         control={control}
@@ -48,7 +49,14 @@ function App() {
 
       <Button color='primary' size='small' startIcon={<CheckOutlined />} variant='contained'>
         Continue To Payment
-      </Button>
+      </Button> */}
+
+      <TextField
+        control={control}
+        label="Name"
+        name='name'
+        variant='outlined'
+      />
     </div>
   );
 }

@@ -23,7 +23,7 @@ const commonIconStyles = (size: Size) => ({
   }),
 });
 
-type ButtonColor = "inherit" | "primary" | "secondary" | "success" | "info"
+type ButtonColor = "inherit" | "primary" | "secondary" | "error" | "success" | "info"
 type ButtonRootProps = {
   color?: ButtonColor,
   component?: string | React.ComponentType,

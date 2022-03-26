@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     Control,
     RegisterOptions,
@@ -14,7 +15,7 @@ type BaseProps = {
 }
 
 type OptionalProps =
-    Partial<React.InputHTMLAttributes<HTMLElement>> & Partial<BaseProps>
+    Partial<React.InputHTMLAttributes<HTMLElement>> & Partial<BaseProps> & Partial<React.RefAttributes<HTMLInputElement>>
 
 export type InputBaseProps = OptionalProps & {
     name: string;

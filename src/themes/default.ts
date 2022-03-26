@@ -4,6 +4,7 @@ const primary = '#ff8a00'
 const secondary = '#FF5C93'
 const warning = '#FFC260'
 const success = '#0bf492'
+const error = '#EB0014'
 const info = '#9013FE'
 
 const lightenRate = 7.5
@@ -37,12 +38,17 @@ const defaultTheme = {
       light: tinycolor(info).lighten(lightenRate).toHexString(),
       dark: tinycolor(info).darken(darkenRate).toHexString(),
     },
+    error: {
+      main: error,
+      light: tinycolor(error).lighten(lightenRate).toHexString(),
+      dark: tinycolor(error).darken(darkenRate).toHexString(),
+    },
     text: {
       primary: '#4A4A4A',
       textPrimary: "#536DFE",
       secondary: '#6E6E6E',
       textSecondary: "#FF5C93",
-      error: "rgb(235, 0, 20)",
+      error,
       hint: '#B9B9B9',
     },
     background: {

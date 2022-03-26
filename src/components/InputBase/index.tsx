@@ -1,19 +1,18 @@
-// Adornet effect
-// https://github.com/mui/material-ui/blob/renovate/mui-x/packages/mui-material/src/TextField/TextField.js
-// https://github.com/mui/material-ui/blob/renovate/mui-x/packages/mui-material/src/FormControl/FormControl.js
-// https://mui.com/components/text-fields/
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 import {
     Controller,
     ControllerRenderProps,
 } from 'react-hook-form'
+import { Any } from 'src/types/share';
 import styled from "styled-components";
 
 import { InputBaseProps } from './types'
 
-const InputBaseRoot = styled.input``
+const InputBaseRoot = styled.input`
+  padding: 16.5px 14px;
+  font-size: 1rem;
+`
 
 const InputBase: React.FC<InputBaseProps> = (props) => {
     const {
@@ -34,7 +33,7 @@ const InputBase: React.FC<InputBaseProps> = (props) => {
     }
 
 
-    const renderInput = (field: ControllerRenderProps<any, string>) => (
+    const renderInput = (field: ControllerRenderProps<Any, string>) => (
         <InputBaseRoot
             required={required}
             onChange={(e) => mergeOnChange(e, field.onChange(e))}
