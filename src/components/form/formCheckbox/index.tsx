@@ -6,20 +6,31 @@ import {
   RegisterOptions,
   ControllerRenderProps,
 } from 'react-hook-form'
+import styled from 'styled-components'
+import Button from 'src/components/button'
+
+type FormCheckboxRootProps = {}
+
+const FormCheckboxRoot = styled(Button).withConfig({
+  displayName: "FormCheckbox"
+})(({ theme }) => ({
+  color: theme.palette.text.secondary,
+}))
+
 
 type FormCheckboxProps = {
+  children?: React.ReactNode
+} & FormCheckboxRootProps
 
-}
+const FormCheckbox = React.forwardRef<HTMLButtonElement, FormCheckboxProps>((props, ref) => {
+  const { ...other } = props
 
-const FormCheckbox = () => {
   return (
-    // <Controller
-    // control={control}
-    // name={name}
-    // render={({ field }) => renderInput(field)}
-    // rules={{ ...rules }}
-    <></>
+    <FormCheckboxRoot
+      ref={ref}
+      {...other}
+    />
   )
-}
+})
 
 export default FormCheckbox

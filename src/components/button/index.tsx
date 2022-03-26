@@ -4,6 +4,25 @@ import styled from "styled-components";
 import { defaultTheme } from "src/themes/default";
 import alpha from 'color-alpha'
 
+type Size = "small" | "medium" | "large"
+const commonIconStyles = (size: Size) => ({
+  ...(size === 'small' && {
+    '& > *:nth-of-type(1)': {
+      fontSize: 18,
+    },
+  }),
+  ...(size === 'medium' && {
+    '& > *:nth-of-type(1)': {
+      fontSize: 20,
+    },
+  }),
+  ...(size === 'large' && {
+    '& > *:nth-of-type(1)': {
+      fontSize: 22,
+    },
+  }),
+});
+
 type ButtonColor = "inherit" | "primary" | "secondary" | "success" | "info"
 type ButtonRootProps = {
   color?: ButtonColor,
@@ -12,6 +31,8 @@ type ButtonRootProps = {
   disabled?: boolean
   type?: 'button' | "reset" | "submit"
   sx?: Record<string, unknown>
+  startIcon?: React.ReactNode
+  endIcon?: React.ReactNode
 }
 
 const buttonColorUtility = (color: ButtonColor) => {
@@ -67,17 +88,50 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   ...sx,
 }))
 
+type ButtonIconProps = {
+  size?: Size
+}
+
+const ButtonStartIcon = styled('span').withConfig<ButtonIconProps>({
+  displayName: 'ButtonStartIcon',
+})(({ size }) => ({
+  display: 'inherit',
+  marginRight: 8,
+  marginLeft: -4,
+
+  ...(size === 'small' && {
+    marginLeft: -2,
+  }),
+  ...commonIconStyles(size),
+}));
+
+const ButtonEndIcon = styled('span').withConfig<ButtonIconProps>({
+  displayName: 'ButtonEndIcon',
+})(({ size }) => ({
+  display: 'inherit',
+  marginRight: -4,
+  marginLeft: 8,
+
+  ...(size === 'small' && {
+    marginRight: -2,
+  }),
+  ...commonIconStyles(size),
+}));
+
 type ButtonProps = {
   children?: React.ReactNode,
-} & ButtonRootProps & Partial<React.ButtonHTMLAttributes<HTMLButtonElement>>
+} & ButtonRootProps & ButtonIconProps & Partial<React.ButtonHTMLAttributes<HTMLButtonElement>>
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const {
-    color = "inherit",
-    disabled,
     type,
+    disabled,
+    color = "inherit",
+    size = 'medium',
     variant = "text",
     component = 'button',
+    startIcon: startIconProp,
+    endIcon: endIconProp,
     children,
     ...other
   } = props
@@ -90,6 +144,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
     buttonProps.disabled = disabled;
   }
 
+  const renderStartIcon = startIconProp && (
+    <ButtonStartIcon size={size}>
+      {startIconProp}
+    </ButtonStartIcon>
+  )
+
+  const renderEndIcon = endIconProp && (
+    <ButtonEndIcon size={size}>
+      {endIconProp}
+    </ButtonEndIcon>
+  )
+
   return (
     <ButtonRoot
       ref={ref}
@@ -98,7 +164,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
       {...buttonProps}
       {...other}
     >
+      {renderStartIcon}
       {children}
+      {renderEndIcon}
     </ButtonRoot>
   )
 })

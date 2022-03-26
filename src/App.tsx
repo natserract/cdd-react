@@ -7,6 +7,8 @@ import './styles/App.css';
 import Stepper from 'src/components/stepper'
 import Typography from 'src/components/typography';
 import Button from 'src/components/button'
+import Checkbox from 'src/components/form/formCheckbox'
+import CheckOutlined from '@ant-design/icons/CheckOutlined'
 
 import { cryptoRandomString } from './utils/random';
 
@@ -26,8 +28,8 @@ function App() {
 
   return (
     <div className="App">
-      <Button onClick={(e) => console.log(e)}>
-        Contained
+      <Button color='primary' endIcon={<CheckOutlined />}>
+        Button
       </Button>
     </div>
   );
