@@ -16,15 +16,27 @@ const InputBaseRoot = styled.input.withConfig<Omit<InputBaseProps, 'name' | 'con
     fontSize: '1rem',
 }))
 
-const InputBase: React.FC<InputBaseProps> = React.forwardRef((props, ref) => {
+const InputBase = React.forwardRef<
+    HTMLInputElement | HTMLTextAreaElement,
+    InputBaseProps
+>((props, ref) => {
     const {
         name,
         control,
         required,
         onChange: onChangeProps,
         rules,
+        inputComponent = 'input',
+        multiline,
+
         ...inputProps
     } = props
+
+    let InputComponent = inputComponent;
+
+    if (multiline && InputComponent === 'input') {
+        InputComponent = 'textarea';
+    }
 
     const mergeOnChange = (event: React.ChangeEvent<HTMLInputElement>, fn) => {
         if (onChangeProps && typeof onChangeProps === "function") {
@@ -34,10 +46,10 @@ const InputBase: React.FC<InputBaseProps> = React.forwardRef((props, ref) => {
         return fn
     }
 
-
     const renderInput = (field: ControllerRenderProps<Any, string>) => (
         <InputBaseRoot
             ref={ref}
+            as={InputComponent as Any}
             required={required}
             onChange={(e) => mergeOnChange(e, field.onChange(e))}
             {...inputProps}

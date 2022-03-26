@@ -42,7 +42,7 @@ const TextFieldLabel = styled.label`
 const TextFieldHelper = styled(Typography) <{
   isError?: boolean
 }>`
-  color: ${props => props.isError ? props.theme.palette.error.main : 'rgba(0, 0, 0, 0.6)'};
+  color: ${props => props.isError ? props.theme.palette.primary.main : 'rgba(0, 0, 0, 0.6)'};
   font-weight: 400;
   font-size: .8rem;
   line-height: 1.66;
@@ -63,7 +63,7 @@ type TextFieldRootProps = {
 
 const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   displayName: 'TextField',
-})(({ theme, variant, color, isError: error, sx, startAdornment, endAdornment }) => ({
+})(({ theme, variant, color, isError: error, sx, startAdornment, endAdornment, multiline }) => ({
   borderRadius: 0,
   display: 'flex',
   lineHeight: '1.2em',
@@ -94,12 +94,12 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
     }),
   },
   ...(error && {
-    borderColor: theme.palette.error.main,
+    borderColor: theme.palette.primary.main,
   }),
 
   [`& + ${TextFieldLabel}`]: {
     ...(error && {
-      color: theme.palette.error.main,
+      color: theme.palette.primary.main,
     })
   },
   [`&:focus + ${TextFieldLabel}`]: {
@@ -122,6 +122,12 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
     paddingRight: 40,
   }),
 
+  // Multiline enabled
+  ...(multiline && {
+    resize: 'none',
+    minHeight: 130
+  }),
+
   ...sx,
 }))
 
@@ -141,7 +147,7 @@ const TextFieldAdornmentRoot =
       color: active ? theme.palette[color].main : 'rgba(0, 0, 0, 0.25)',
     }),
     ...(isError && {
-      color: theme.palette.error.main
+      color: theme.palette.primary.main
     }),
 
     ...(startAdornment && {

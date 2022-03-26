@@ -30,29 +30,25 @@ function App() {
     // console.log('random', cryptoRandomString(5, undefined, "1I0O"))
   }, [watchFields])
 
-  console.log('errors', errors)
-  // console.log('watchFields', watchFields)
-  // console.log('getFieldState', getFieldState('name'))
-  console.log('formState', control)
-  const [showIcon, setShowIcon] = useState(false)
-
   return (
     <div className="App">
       <br />
       <br />
       <br />
 
-      {/* <Checkbox
+      <Checkbox
         checked={checkedState}
         color='success'
         control={control}
         label='Send as dropshipper'
         name='check'
+        variant='outlined'
         onChange={(event) => setCheckedState(event.target.checked)}
       />
       <br />
       <br />
 
+      {/* 
       <Button color='primary' size='small' startIcon={<CheckOutlined />} variant='contained'>
         Continue To Payment
       </Button> */}
@@ -70,6 +66,7 @@ function App() {
         }}
         variant='outlined'
         activeIconOnChange
+        multiline
         required
       />
     </div>

@@ -6,7 +6,7 @@ import {
 import { Any } from 'src/types/share';
 
 type BaseProps = {
-    onChange: React.ChangeEventHandler<HTMLInputElement>;
+    onChange: React.ChangeEventHandler<HTMLInputElement> | React.ChangeEventHandler<HTMLTextAreaElement>;
     rules: Omit<
         RegisterOptions<Any, Any>,
         'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
@@ -14,10 +14,13 @@ type BaseProps = {
     required: boolean;
 }
 
-export type OptionalProps =
-    Partial<React.InputHTMLAttributes<HTMLElement>> & Partial<BaseProps> & Partial<React.RefAttributes<HTMLInputElement>>
+export type OptionalProps<T = unknown> =
+    Partial<React.InputHTMLAttributes<HTMLElement> |
+        React.TextareaHTMLAttributes<HTMLElement>> &
+    Partial<BaseProps> &
+    Partial<React.MutableRefObject<T>>
 
-export type InputBaseProps = OptionalProps & {
+export type InputBaseProps<T = HTMLInputElement | HTMLTextAreaElement> = OptionalProps<T> & {
     // React hook form
     name: string;
     control: Control<Any, Any>;
@@ -25,6 +28,7 @@ export type InputBaseProps = OptionalProps & {
     // Base
     color?: "primary" | "secondary" | "success" | "error" | "info"
     variant?: "outlined" | "filled" | "standard"
+    inputComponent?: string;
     sx?: React.CSSProperties
 
     // Errors
@@ -34,4 +38,7 @@ export type InputBaseProps = OptionalProps & {
 
     // Icon
     activeIconOnChange?: boolean;
+
+    // Multiline/textarea
+    multiline?: boolean
 }

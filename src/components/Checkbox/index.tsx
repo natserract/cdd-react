@@ -19,7 +19,7 @@ const CheckboxIcon = styled.svg`
   stroke-width: 3px;
 `
 
-const CheckboxInput = styled(InputBase).attrs({ type: 'checkbox' })`
+const CheckboxInput = styled(InputBase).attrs<HTMLInputElement>({ type: 'checkbox' })`
   border: 0;
   clip: rect(0 0 0 0);
   clippath: inset(50%);
@@ -74,20 +74,22 @@ const CheckboxLabel = styled(Typography)((_props) => ({
   cursor: 'pointer',
 }))
 
-const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps & InputBaseProps>((props, ref) => {
+const Checkbox = React.forwardRef<
+  HTMLDivElement, CheckboxProps &
+  InputBaseProps<HTMLInputElement>
+>((props, ref) => {
   const {
     name,
     control,
     checked,
     label: labelProps,
-    type,
     color = "primary",
     variant = 'normal',
     ...other
   } = props
 
   return (
-    <CheckboxRoot ref={ref} {...other}>
+    <CheckboxRoot ref={ref}>
       <CheckboxLabel component='label'>
         {labelProps}
 
