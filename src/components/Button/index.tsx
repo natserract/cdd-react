@@ -23,6 +23,20 @@ const commonIconStyles = (size: Size) => ({
   }),
 });
 
+const commonFontSizeStyles = (size: Size) => ({
+  ...(size === 'small' && {
+    fontSize: 13,
+  }),
+
+  ...(size === 'medium' && {
+    fontSize: 16,
+  }),
+
+  ...(size === 'large' && {
+    fontSize: 17,
+  }),
+})
+
 type ButtonColor = "inherit" | "primary" | "secondary" | "error" | "success" | "info"
 type ButtonRootProps = {
   color?: ButtonColor,
@@ -86,24 +100,10 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   }),
   // End Background color
 
-  // Font Size
-  ...(size === 'small' && {
-    fontSize: 13,
-  }),
-
-  ...(size === 'medium' && {
-    fontSize: 16,
-  }),
-
-  ...(size === 'large' && {
-    fontSize: 17,
-  }),
-  // End Font Size
-
+  ...commonFontSizeStyles(size),
   ...(disabled && {
     opacity: .5,
   }),
-
   ...sx,
 }))
 

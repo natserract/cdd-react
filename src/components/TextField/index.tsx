@@ -1,8 +1,10 @@
 
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useCallback } from 'react'
 import styled from 'styled-components'
+import useForkRef from '@rooks/use-fork-ref'
+import { useOnClickOutside } from 'src/hooks/useClickOutside'
 
 import InputBase from '../InputBase'
 import { InputBaseProps } from '../InputBase/types'
@@ -48,17 +50,16 @@ const TextFieldHelper = styled(Typography)`
 `
 
 type TextFieldRootProps = {
-  placeholder?: string
   label?: string;
   helperText?: string
   fullWidth?: boolean,
-  color?: "primary" | "secondary" | "success" | "error" | "info"
-  variant?: "outlined" | "filled" | "standard"
+  startAdornment?: React.ReactNode,
+  endAdornment?: React.ReactNode,
 }
 
 const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   displayName: 'TextField',
-})(({ theme, variant, color }) => ({
+})(({ theme, variant, color, sx, startAdornment, endAdornment }) => ({
   borderRadius: 0,
   display: 'flex',
   lineHeight: '1.2em',
@@ -70,7 +71,7 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
     border: '1px solid rgba(0, 0, 0, 0.15)',
   }),
 
-  "&:hover": {
+  "&:hover:not([disabled], :focus)": {
     borderColor: ' rgba(0, 0, 0, .25)'
   },
 
@@ -79,18 +80,54 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   order: 2,
   height: '1.2em',
 
-  "&:focus, &.focus": {
+  "&:focus": {
     outline: 0,
     borderColor: theme.palette[color].main,
   },
 
+  [`&:focus + ${TextFieldLabel}`]: {
+    color: theme.palette[color].main,
+  },
   [`&:focus + ${TextFieldLabel}, &.focus + ${TextFieldLabel}`]: {
     opacity: 1,
-    color: theme.palette[color].main,
     transform: 'translate(14px, 3px) scale(0.65)',
   },
 
+  ...(startAdornment && {
+    paddingLeft: 40,
+    [`& + ${TextFieldLabel}`]: {
+      left: '3em',
+    },
+  }),
+  ...(endAdornment && {
+    paddingRight: 40,
+  }),
+
+  ...sx,
 }))
+
+const TextFieldAdornmentRoot =
+  styled('div')<Pick<
+    TextFieldRootProps,
+    'startAdornment' | 'endAdornment'
+  > & {
+    active?: boolean;
+    color?: "primary" | "secondary" | "success" | "error" | "info"
+  }>(({ theme, startAdornment, endAdornment, active, color }) => ({
+    position: 'absolute',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    color: active ? theme.palette[color].main : 'rgba(0, 0, 0, 0.25)',
+
+    ...(startAdornment && {
+      left: '2.7em'
+    }),
+    ...(endAdornment && {
+      right: '2.7em',
+    }),
+  })
+  )
+
 
 type TextFieldProps = TextFieldRootProps & InputBaseProps
 
@@ -103,14 +140,22 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
     helperText,
     className,
     onChange: onChangeProps,
+    startAdornment,
+    endAdornment,
     color = 'primary',
     ...other
   } = props
 
+  const rootRef = useRef(null)
+  const handleRef = useForkRef(ref, rootRef)
+
+  const [isActive, setIsActive] = useState(false)
   const [classes, setClasses] = useState('')
 
+  // Call hook passing in the ref and a function to call on outside click
+  useOnClickOutside(rootRef, () => setIsActive(false));
+
   const handleChange = useCallback((e) => {
-    onChangeProps(e)
     const value = e.target.value
 
     if (value) {
@@ -118,19 +163,47 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
     } else {
       setClasses('')
     }
+
+    if (onChangeProps && typeof onChangeProps === "function") {
+      onChangeProps(e)
+    }
   }, [onChangeProps])
+
+  const renderStartAdornment = startAdornment && (
+    <TextFieldAdornmentRoot
+      active={isActive}
+      color={color}
+      startAdornment={startAdornment}
+    >
+      {startAdornment}
+    </TextFieldAdornmentRoot>
+  )
+
+  const renderEndAdornment = endAdornment && (
+    <TextFieldAdornmentRoot
+      active={isActive}
+      color={color}
+      endAdornment={endAdornment}
+    >
+      {endAdornment}
+    </TextFieldAdornmentRoot>
+  )
 
   return (
     <TextFieldContainer>
       <TextFieldRoot
-        ref={ref}
+        ref={handleRef}
         className={clsx(classes, className)}
         color={color}
         control={control}
+        endAdornment={endAdornment}
         name={name}
+        startAdornment={startAdornment}
         onChange={handleChange}
+        onClick={() => setIsActive(true)}
         {...other}
       />
+
       <TextFieldLabel>
         {placeholder || label}
       </TextFieldLabel>
@@ -141,6 +214,9 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
           component='p'
         />
       )}
+
+      {renderStartAdornment}
+      {renderEndAdornment}
     </TextFieldContainer>
   )
 })

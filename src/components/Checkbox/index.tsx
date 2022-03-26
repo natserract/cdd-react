@@ -10,7 +10,7 @@ type CheckboxProps = {
   checked: boolean
   variant?: "normal" | "outlined"
   label?: string;
-  color?: "primary" | "secondary" | "success"
+  color?: "primary" | "secondary" | "success";
 }
 
 const CheckboxIcon = styled.svg`

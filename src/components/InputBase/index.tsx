@@ -9,12 +9,14 @@ import styled from "styled-components";
 
 import { InputBaseProps } from './types'
 
-const InputBaseRoot = styled.input`
-  padding: 16.5px 14px;
-  font-size: 1rem;
-`
+const InputBaseRoot = styled.input.withConfig<Omit<InputBaseProps, 'name' | 'control'>>({
+    displayName: 'InputBase'
+})(() => ({
+    padding: '16.5px 14px',
+    fontSize: '1rem',
+}))
 
-const InputBase: React.FC<InputBaseProps> = (props) => {
+const InputBase: React.FC<InputBaseProps> = React.forwardRef((props, ref) => {
     const {
         name,
         control,
@@ -35,6 +37,7 @@ const InputBase: React.FC<InputBaseProps> = (props) => {
 
     const renderInput = (field: ControllerRenderProps<Any, string>) => (
         <InputBaseRoot
+            ref={ref}
             required={required}
             onChange={(e) => mergeOnChange(e, field.onChange(e))}
             {...inputProps}
@@ -49,6 +52,6 @@ const InputBase: React.FC<InputBaseProps> = (props) => {
             rules={{ ...rules }}
         />
     )
-}
+})
 
 export default InputBase

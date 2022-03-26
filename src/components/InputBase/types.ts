@@ -14,10 +14,16 @@ type BaseProps = {
     required: boolean;
 }
 
-type OptionalProps =
+export type OptionalProps =
     Partial<React.InputHTMLAttributes<HTMLElement>> & Partial<BaseProps> & Partial<React.RefAttributes<HTMLInputElement>>
 
 export type InputBaseProps = OptionalProps & {
+    // React hook form
     name: string;
-    control: Control<Any, Any>
+    control: Control<Any, Any>;
+
+    // Base
+    color?: "primary" | "secondary" | "success" | "error" | "info"
+    variant?: "outlined" | "filled" | "standard"
+    sx?: React.CSSProperties
 }

@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     // console.log('random', cryptoRandomString(5, undefined, "1I0O"))
-    console.log('formState', getValues())
+    console.log('formState', formState)
   }, [formState, getValues])
 
   return (
