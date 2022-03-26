@@ -7,27 +7,12 @@
 import React from 'react'
 import {
     Controller,
-    Control,
-    RegisterOptions,
     ControllerRenderProps,
 } from 'react-hook-form'
 
+import { FormInputProps } from '../types'
+
 import { StyledFormInput } from './styles'
-
-type BaseProps = {
-    onChange: React.ChangeEventHandler<HTMLInputElement>;
-    rules: Omit<
-        RegisterOptions<any, any>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
-    >;
-    required: boolean;
-}
-
-type OptionalProps = Partial<React.InputHTMLAttributes<HTMLElement>> & Partial<BaseProps>
-
-type FormInputProps = OptionalProps & {
-    name: string;
-    control: Control<any, any>
-}
 
 const FormInput: React.FC<FormInputProps> = (props) => {
     const {

@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from "styled-components";
 import { defaultTheme } from "src/themes/default";
+import { Any } from 'src/types/share';
 
 type TypographyRootProps = {
   color?: "primary" | "textPrimary" | "secondary" | "textSecondary" | "error" | "hint",
   gutterBottom?: boolean
   component?: string | React.ComponentType,
-  sx?: Record<string, unknown>
+  sx?: React.CSSProperties
   variant?: keyof typeof defaultTheme.typography
   bolder?: boolean,
 }
@@ -34,7 +35,7 @@ type TypographyProps = {
   children?: React.ReactNode,
 } & TypographyRootProps
 
-const Typography = React.forwardRef<React.Component<{}, any, any>, TypographyProps>((props, ref) => {
+const Typography = React.forwardRef<React.Component<{}, Any, Any>, TypographyProps>((props, ref) => {
   const {
     color = "primary",
     variant = "body1",

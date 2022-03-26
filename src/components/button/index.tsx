@@ -29,8 +29,8 @@ type ButtonRootProps = {
   component?: string | React.ComponentType,
   variant?: "contained" | "outlined" | "text"
   disabled?: boolean
-  type?: 'button' | "reset" | "submit"
-  sx?: Record<string, unknown>
+  type?: string
+  sx?: React.CSSProperties,
   startIcon?: React.ReactNode
   endIcon?: React.ReactNode
 }
@@ -136,10 +136,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
     ...other
   } = props
 
-  const ComponentProp = component
   const buttonProps = {} as TypeObject
 
-  if (ComponentProp === 'button') {
+  if (component === 'button') {
     buttonProps.type = type === undefined ? 'button' : type;
     buttonProps.disabled = disabled;
   }

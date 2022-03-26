@@ -16,6 +16,7 @@ const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad']
 
 function App() {
   const [activeState, setActiveState] = useState(0)
+  const [checkedState, setCheckedState] = useState(false)
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { control, formState: { errors: _errors } } = useForm({
@@ -28,9 +29,17 @@ function App() {
 
   return (
     <div className="App">
-      <Button color='primary' endIcon={<CheckOutlined />}>
-        Button
-      </Button>
+      <br />
+      <br />
+      <br />
+
+      <Checkbox
+        checked={checkedState}
+        color='success'
+        control={control}
+        name='check'
+        onChange={(event) => setCheckedState(event.target.checked)}
+      />
     </div>
   );
 }

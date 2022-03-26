@@ -14,7 +14,7 @@ type ChildrenNode = {
 type StepperRootProps = {
   activeStep: number;
   orientation?: "horizontal",
-  sx?: Record<string, unknown>
+  sx?: React.CSSProperties,
 }
 
 const StepperRoot = styled('div').withConfig<StepperRootProps>({

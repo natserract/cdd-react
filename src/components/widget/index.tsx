@@ -6,7 +6,7 @@ type WidgetRootProps = {
 
   // Used for custom/additional style
   // @see: https://mui.com/system/the-sx-prop/
-  sx?: Record<string, unknown>
+  sx?: React.CSSProperties,
 }
 
 const WidgetRoot = styled('div').withConfig<WidgetRootProps>({
