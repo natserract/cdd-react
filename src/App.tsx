@@ -7,7 +7,7 @@ import './styles/App.css';
 import Stepper from 'src/components/Stepper'
 import Typography from 'src/components/Typography';
 import Button from 'src/components/Button'
-import Checkbox from 'src/components/Checbox'
+import Checkbox from 'src/components/Checkbox'
 import CheckOutlined from '@ant-design/icons/CheckOutlined'
 
 import { cryptoRandomString } from './utils/random';
