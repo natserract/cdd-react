@@ -1,9 +1,9 @@
 import tinycolor from 'tinycolor2'
 
-const primary = '#536DFE'
+const primary = '#ff8a00'
 const secondary = '#FF5C93'
 const warning = '#FFC260'
-const success = '#3CD4A0'
+const success = '#0bf492'
 const info = '#9013FE'
 
 const lightenRate = 7.5
@@ -80,6 +80,22 @@ const defaultTheme = {
     },
     body1: {
       fontSize: "1rem",
+    }
+  },
+  button: {
+    size: {
+      small: {
+        width: '11em',
+        height: '3em'
+      },
+      medium: {
+        width: '15em',
+        height: '4em'
+      },
+      large: {
+        width: '17em',
+        height: '5em',
+      }
     }
   },
   shape: {

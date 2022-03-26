@@ -8,17 +8,17 @@ type Size = "small" | "medium" | "large"
 const commonIconStyles = (size: Size) => ({
   ...(size === 'small' && {
     '& > *:nth-of-type(1)': {
-      fontSize: 18,
+      fontSize: 13,
     },
   }),
   ...(size === 'medium' && {
     '& > *:nth-of-type(1)': {
-      fontSize: 20,
+      fontSize: 16,
     },
   }),
   ...(size === 'large' && {
     '& > *:nth-of-type(1)': {
-      fontSize: 22,
+      fontSize: 18,
     },
   }),
 });
@@ -33,6 +33,7 @@ type ButtonRootProps = {
   sx?: React.CSSProperties,
   startIcon?: React.ReactNode
   endIcon?: React.ReactNode
+  size?: Size,
 }
 
 const buttonColorUtility = (color: ButtonColor) => {
@@ -47,7 +48,7 @@ const buttonColorUtility = (color: ButtonColor) => {
 
 const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   displayName: 'Button',
-})(({ sx, variant, disabled, color }) => ({
+})(({ sx, variant, disabled, color, size }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -56,16 +57,18 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   outline: 0,
   border: 0,
   margin: 0,
-  borderRadius: 0,
-  padding: '6px 16px',
-  color: color === 'inherit' ? 'inherit' : alpha('white', 1),
+  borderRadius: 3,
+  padding: '10px 23px 12px',
+  color: color === 'inherit' ? 'inherit' : (
+    variant !== 'text' ? alpha('white', 1) : buttonColorUtility(color).main
+  ),
   cursor: disabled ? 'default' : 'pointer',
   minWidth: 64,
   minHeight: 35,
   transition: '.1s all ease-in-out',
 
   ...(variant === "text") && {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
 
   ...(variant === 'outlined' && {
@@ -73,13 +76,29 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
     border: `1px solid rgba(255, 255, 255, 0.23)`
   }),
 
-  ...(color && color !== 'inherit' && {
+  // Background color
+  ...(variant !== "text" && color && color !== 'inherit' && {
     backgroundColor: buttonColorUtility(color).main,
 
     "&:hover": {
       backgroundColor: alpha(buttonColorUtility(color).dark, .9)
     }
   }),
+  // End Background color
+
+  // Font Size
+  ...(size === 'small' && {
+    fontSize: 13,
+  }),
+
+  ...(size === 'medium' && {
+    fontSize: 16,
+  }),
+
+  ...(size === 'large' && {
+    fontSize: 17,
+  }),
+  // End Font Size
 
   ...(disabled && {
     opacity: .5,
@@ -144,13 +163,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
   }
 
   const renderStartIcon = startIconProp && (
-    <ButtonStartIcon size={size}>
+    <ButtonStartIcon className='ButtonStartIcon' size={size}>
       {startIconProp}
     </ButtonStartIcon>
   )
 
   const renderEndIcon = endIconProp && (
-    <ButtonEndIcon size={size}>
+    <ButtonEndIcon className='ButtonEndIcon' size={size}>
       {endIconProp}
     </ButtonEndIcon>
   )
@@ -159,6 +178,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => 
     <ButtonRoot
       ref={ref}
       color={color}
+      size={size}
       variant={variant}
       {...buttonProps}
       {...other}

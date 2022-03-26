@@ -9,12 +9,13 @@ import {
     Controller,
     ControllerRenderProps,
 } from 'react-hook-form'
+import styled from "styled-components";
 
-import { FormInputProps } from '../types'
+import { InputBaseProps } from './types'
 
-import { StyledFormInput } from './styles'
+const InputBaseRoot = styled.input``
 
-const FormInput: React.FC<FormInputProps> = (props) => {
+const InputBase: React.FC<InputBaseProps> = (props) => {
     const {
         name,
         control,
@@ -24,16 +25,19 @@ const FormInput: React.FC<FormInputProps> = (props) => {
         ...inputProps
     } = props
 
-    const renderInput = (field: ControllerRenderProps<any, string>) => (
-        <StyledFormInput
-            required={required}
-            onChange={(event) => {
-                if (onChangeProps && typeof onChangeProps === "function") {
-                    onChangeProps(event)
-                }
+    const mergeOnChange = (event: React.ChangeEvent<HTMLInputElement>, fn) => {
+        if (onChangeProps && typeof onChangeProps === "function") {
+            onChangeProps(event)
+        }
 
-                return field.onChange(event)
-            }}
+        return fn
+    }
+
+
+    const renderInput = (field: ControllerRenderProps<any, string>) => (
+        <InputBaseRoot
+            required={required}
+            onChange={(e) => mergeOnChange(e, field.onChange(e))}
             {...inputProps}
         />
     )
@@ -48,4 +52,4 @@ const FormInput: React.FC<FormInputProps> = (props) => {
     )
 }
 
-export default FormInput
+export default InputBase

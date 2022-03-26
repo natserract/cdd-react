@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import Typography from 'src/components/typography'
+import Typography from 'src/components/Typography'
 import { defaultTheme } from "src/themes/default";
 
-import FormInput from '../formInput'
-import { FormInputProps } from '../types'
+import InputBase from '../InputBase'
+import { InputBaseProps } from '../InputBase/types'
 
-type FormCheckboxProps = {
+type CheckboxProps = {
   checked: boolean
   variant?: "normal" | "outlined"
   label?: string;
@@ -19,7 +19,7 @@ const CheckboxIcon = styled.svg`
   stroke-width: 3px;
 `
 
-const CheckboxInput = styled(FormInput).attrs({ type: 'checkbox' })`
+const CheckboxInput = styled(InputBase).attrs({ type: 'checkbox' })`
   border: 0;
   clip: rect(0 0 0 0);
   clippath: inset(50%);
@@ -31,7 +31,7 @@ const CheckboxInput = styled(FormInput).attrs({ type: 'checkbox' })`
   white-space: nowrap;
   width: 1px;
 `
-const CheckboxWrapper = styled('div')<FormCheckboxProps>(({ variant, checked, color }) => ({
+const CheckboxWrapper = styled('div')<CheckboxProps>(({ variant, checked, color }) => ({
   display: 'inline-block',
   width: '16px',
   height: '16px',
@@ -47,8 +47,8 @@ const CheckboxWrapper = styled('div')<FormCheckboxProps>(({ variant, checked, co
   border: `solid 3px ${defaultTheme.palette[color].main}`,
   borderRadius: '3px',
   transition: 'all 150ms',
-  marginRight: '5px',
-  marginTop: '2px',
+  marginRight: '7px',
+
 
   [`${CheckboxIcon}`]: {
     visibility: checked ? 'visible' : 'hidden',
@@ -59,7 +59,7 @@ const CheckboxWrapper = styled('div')<FormCheckboxProps>(({ variant, checked, co
   }
 }))
 
-const FormCheckboxRoot = styled('div').withConfig({
+const CheckboxRoot = styled('div').withConfig({
   displayName: "FormCheckbox"
 })(() => ({
   display: 'inline-block',
@@ -67,13 +67,14 @@ const FormCheckboxRoot = styled('div').withConfig({
   cursor: 'pointer'
 }))
 
-const FormCheckboxLabel = styled(Typography)((_props) => ({
+const CheckboxLabel = styled(Typography)((_props) => ({
   display: 'inline-flex',
+  alignItems: 'center',
   flexDirection: 'row-reverse',
   cursor: 'pointer',
 }))
 
-const FormCheckbox = React.forwardRef<HTMLDivElement, FormCheckboxProps & FormInputProps>((props, ref) => {
+const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps & InputBaseProps>((props, ref) => {
   const {
     name,
     control,
@@ -86,8 +87,8 @@ const FormCheckbox = React.forwardRef<HTMLDivElement, FormCheckboxProps & FormIn
   } = props
 
   return (
-    <FormCheckboxRoot ref={ref} {...other}>
-      <FormCheckboxLabel component='label'>
+    <CheckboxRoot ref={ref} {...other}>
+      <CheckboxLabel component='label'>
         {labelProps}
 
         <CheckboxInput
@@ -107,10 +108,9 @@ const FormCheckbox = React.forwardRef<HTMLDivElement, FormCheckboxProps & FormIn
             <polyline points="20 6 9 17 4 12" />
           </CheckboxIcon>
         </CheckboxWrapper>
-      </FormCheckboxLabel>
-
-    </FormCheckboxRoot>
+      </CheckboxLabel>
+    </CheckboxRoot>
   )
 })
 
-export default FormCheckbox
+export default Checkbox
