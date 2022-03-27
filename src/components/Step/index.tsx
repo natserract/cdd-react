@@ -26,9 +26,8 @@ const StepRoot = styled('div').withConfig<StepProps>({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-
   color: theme.palette[color].main,
-  fontWeight: 500,
+  padding: '10px 0',
 }))
 
 const Step = React.forwardRef<Any, StepProps>((props, ref) => {
@@ -65,11 +64,13 @@ const Step = React.forwardRef<Any, StepProps>((props, ref) => {
     last,
     completed,
     active,
+    disabled,
   }), [
     active,
     completed,
     index,
-    last
+    last,
+    disabled
   ])
 
   const rootProps = {

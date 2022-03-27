@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Widget from 'src/components/Widget'
 import Stepper, { StepperContext } from 'src/components/Stepper'
 import Step from 'src/components/Step';
+import StepLabel from 'src/components/StepLabel';
 import LeftOutlined from '@ant-design/icons/LeftOutlined';
 
 const steps = ['Delivery', 'Payment', 'Finish']
@@ -23,7 +24,11 @@ function App() {
     <AppContainer>
       <Stepper activeStep={activeStepState}>
         {steps.map((step) => (
-          <Step key={step}>{step}</Step>
+          <Step key={step}>
+            <StepLabel variant='numbering'>
+              {step}
+            </StepLabel>
+          </Step>
         ))}
       </Stepper>
 
