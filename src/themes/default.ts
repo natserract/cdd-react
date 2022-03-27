@@ -1,5 +1,7 @@
 import tinycolor from 'tinycolor2'
 
+import { screenXsPortraitMax, screenSmPortraitMax, screenXlMin, screenXsLandscapeMax } from './breakpoints'
+
 const primary = '#ff8a00'
 const secondary = '#FF5C93'
 const warning = '#FFC260'
@@ -55,6 +57,32 @@ const defaultTheme = {
       default: '#F6F7FF',
       light: '#F3F5FF',
       paper: "#fff"
+    },
+  },
+  breakpoints: {
+    up: (points: "md" | "sm" | "xs") => {
+      switch (points) {
+        case 'xs':
+          return `@media (min-width: ${screenXsLandscapeMax})`
+        case 'sm':
+          return `@media (min-width: ${screenSmPortraitMax})`
+        case 'md':
+          return `@media (min-width: ${screenXlMin})`
+        default:
+          break;
+      }
+    },
+    down: (points: "md" | "sm" | "xs") => {
+      switch (points) {
+        case 'xs':
+          return `@media (max-width: ${screenXsLandscapeMax})`
+        case 'sm':
+          return `@media (max-width: ${screenSmPortraitMax})`
+        case 'md':
+          return `@media (max-width: ${screenXlMin})`
+        default:
+          break;
+      }
     },
   },
   customShadows: {

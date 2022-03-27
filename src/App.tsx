@@ -19,11 +19,15 @@ const AppContainer = styled.div`
   align-items: center;
 `
 
-const AppContent = styled(Widget)`
-  padding: 30px;
-  height: 100%;
-  display: flex;
-`
+const AppContent = styled(Widget)(({ theme }) => ({
+  padding: 30,
+  height: '100%',
+  display: 'flex',
+
+  [`${theme.breakpoints.down('xs')}`]: {
+    padding: '20px 10px',
+  }
+}))
 
 function App() {
   const [activeStepState, setActiveStepState] = useState(0)
