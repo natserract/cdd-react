@@ -48,7 +48,7 @@ const TextFieldHelper = styled(Typography) <{
   margin: 5px 5px 0px;
   order: 3;
   position: absolute;
-  bottom: -3px;
+  bottom: -25px;
 `
 
 type TextFieldRootProps = {
@@ -61,7 +61,17 @@ type TextFieldRootProps = {
 
 const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   displayName: 'TextField',
-})(({ theme, variant, color, isError: error, sx, startAdornment, endAdornment, multiline }) => ({
+})(({
+  theme,
+  variant,
+  color,
+  isError: error,
+  sx,
+  startAdornment,
+  endAdornment,
+  multiline,
+  disabled
+}) => ({
   borderRadius: 0,
   display: 'flex',
   lineHeight: '1.2em',
@@ -91,12 +101,12 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
       borderColor: theme.palette[color].main,
     }),
   },
-  ...(error && {
+  ...(error && !disabled && {
     borderColor: theme.palette.primary.main,
   }),
 
   [`& + ${TextFieldLabel}`]: {
-    ...(error && {
+    ...(error && !disabled && {
       color: theme.palette.primary.main,
     })
   },
@@ -106,14 +116,16 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
     }),
   },
   [`&:focus + ${TextFieldLabel}, &.focus + ${TextFieldLabel}`]: {
-    opacity: 1,
-    transform: 'translate(14px, 7px) scale(0.65)',
+    ...(!disabled && {
+      opacity: 1,
+      transform: 'translate(14px, 7px) scale(0.65)',
+    }),
   },
 
   ...(startAdornment && {
     paddingLeft: 40,
     [`& + ${TextFieldLabel}`]: {
-      left: '3em',
+      left: '27.2px',
     },
   }),
   ...(endAdornment && {
@@ -136,7 +148,14 @@ type TextFieldAdornmentRootProps = {
 } & Pick<TextFieldRootProps, 'startAdornment' | 'endAdornment'>
 
 const TextFieldAdornmentRoot =
-  styled('div')<TextFieldAdornmentRootProps>(({ theme, startAdornment, endAdornment, active, color, isError }) => ({
+  styled('div')<TextFieldAdornmentRootProps>(({
+    theme,
+    startAdornment,
+    endAdornment,
+    active,
+    color,
+    isError,
+  }) => ({
     position: 'absolute',
     top: '50%',
     transform: 'translateY(-50%)',
@@ -149,10 +168,10 @@ const TextFieldAdornmentRoot =
     }),
 
     ...(startAdornment && {
-      left: '2.7em'
+      left: '1em'
     }),
     ...(endAdornment && {
-      right: '2.7em',
+      right: '1em',
     }),
   })
   )
@@ -176,6 +195,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
     isError,
     errors,
     activeIconOnChange,
+    disabled,
     ...other
   } = props
 
@@ -215,7 +235,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
   }, [onChangeProps])
 
   const isHasStartAdornment = startAdornment && !activeIconOnChange
-  const isHasStartAdornmentOnChange = startAdornment && activeIconOnChange && activeIconOnChangeState
+  const isHasStartAdornmentOnChange = startAdornment && activeIconOnChange && activeIconOnChangeState && !disabled
 
   const renderStartAdornment = (isHasStartAdornmentOnChange || isHasStartAdornment) && (
     <TextFieldAdornmentRoot
@@ -229,7 +249,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
   )
 
   const isHasEndAdornment = endAdornment && !activeIconOnChange
-  const isHasEndAdornmentOnChange = endAdornment && activeIconOnChange && activeIconOnChangeState
+  const isHasEndAdornmentOnChange = endAdornment && activeIconOnChange && activeIconOnChangeState && !disabled
 
   const renderEndAdornment = (isHasEndAdornmentOnChange || isHasEndAdornment) && (
     <TextFieldAdornmentRoot
@@ -243,12 +263,12 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
   )
 
   return (
-    <TextFieldContainer>
+    <TextFieldContainer ref={handleRef}>
       <TextFieldRoot
-        ref={handleRef}
         className={clsx(classes, className)}
         color={color}
         control={control}
+        disabled={disabled}
         endAdornment={endAdornment}
         isError={isFormError}
         name={name}

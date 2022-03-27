@@ -24,6 +24,7 @@ export type InputBaseProps<T = HTMLInputElement | HTMLTextAreaElement> = Optiona
     // React hook form
     name: string;
     control: Control<Any, Any>;
+    shouldUnregister?: boolean;
 
     // Base
     color?: "primary" | "secondary" | "success" | "error" | "info"

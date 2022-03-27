@@ -9,17 +9,21 @@ import styled from "styled-components";
 
 import { InputBaseProps } from './types'
 
-const InputBaseRoot = styled.input.withConfig<Omit<InputBaseProps, 'name' | 'control'>>({
+const InputBaseRoot = styled.input.withConfig<Omit<InputBaseProps, 'name' | 'control' | 'shouldUnregister'>>({
     displayName: 'InputBase'
-})(() => ({
+})(({ disabled }) => ({
     padding: '20px 14px',
     fontSize: '1rem',
+
+    ...(disabled && {
+        fontSize: 0,
+    })
 }))
 
 const InputBase = React.forwardRef<
     HTMLInputElement | HTMLTextAreaElement,
     InputBaseProps
->((props, ref) => {
+>((props, _ref) => {
     const {
         name,
         control,
@@ -28,7 +32,7 @@ const InputBase = React.forwardRef<
         rules,
         inputComponent = 'input',
         multiline,
-
+        shouldUnregister,
         ...inputProps
     } = props
 
@@ -48,9 +52,11 @@ const InputBase = React.forwardRef<
 
     const renderInput = (field: ControllerRenderProps<Any, string>) => (
         <InputBaseRoot
-            ref={ref}
+            ref={field.ref}
             as={InputComponent as Any}
+            name={field.name}
             required={required}
+            value={field.value ?? ''}
             onChange={(e) => mergeOnChange(e, field.onChange(e))}
             {...inputProps}
         />
@@ -61,7 +67,11 @@ const InputBase = React.forwardRef<
             control={control}
             name={name}
             render={({ field }) => renderInput(field)}
-            rules={{ ...rules }}
+            rules={{
+                required,
+                ...rules
+            }}
+            shouldUnregister={shouldUnregister}
         />
     )
 })

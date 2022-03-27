@@ -47,7 +47,7 @@ const defaultTheme = {
     },
     text: {
       primary: '#4A4A4A',
-      textPrimary: "#536DFE",
+      textPrimary: primary,
       secondary: '#6E6E6E',
       textSecondary: "#FF5C93",
       error,

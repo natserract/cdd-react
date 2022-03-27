@@ -55,7 +55,7 @@ const GridColumn = styled('div').attrs<GridColumnProps>(({
   ...sx,
 }))
 
-type GridProps = {
+export type GridProps = {
   children: React.ReactNode;
 } & GridRootProps & GridColumnProps & Partial<HTMLAttributes<HTMLDivElement>>
 
