@@ -4,6 +4,8 @@ import Widget from 'src/components/Widget'
 import Stepper from 'src/components/Stepper'
 import Step from 'src/components/Step';
 import StepLabel from 'src/components/StepLabel';
+import Button from 'src/components/Button'
+import ArrowLeftOutlined from '@ant-design/icons/ArrowLeftOutlined'
 
 import Grid from './components/Grid';
 
@@ -18,7 +20,7 @@ const AppContainer = styled.div`
 `
 
 const AppContent = styled(Widget)`
-  padding: 10px 30px;
+  padding: 30px;
   height: 100%;
   display: flex;
 `
@@ -40,9 +42,11 @@ function App() {
       </Stepper>
 
       <AppContent fullWidth>
-        <Grid container>
-          <Grid sm={10} xs={12} item>
-            <h2>Back</h2>
+        <Grid container fluid>
+          <Grid item>
+            <Button startIcon={<ArrowLeftOutlined />}>
+              Back to cart
+            </Button>
           </Grid>
         </Grid>
       </AppContent>

@@ -11,6 +11,7 @@ type Query = {
 
 type GridRootProps = Conditional<{
   container: boolean,
+  fluid?: boolean;
   item?: never;
 } & {
     [K in keyof Partial<Query>]: Omit<Query, K>
@@ -21,9 +22,11 @@ type GridRootProps = Conditional<{
     [K in keyof Partial<Query>]: Query[K]
   }>
 
-const GridRoot = styled('div').attrs<HTMLDivElement>({
-  className: 'container'
-}).withConfig({
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const GridRoot = styled('div').attrs<GridRootProps>(({ fluid }) => ({
+  className: fluid ? 'container-fluid' : 'container'
+})).withConfig({
   displayName: 'Grid'
 })((_props) => ({}))
 
