@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import Validation from 'src/static/validation';
 import CheckOutlined from '@ant-design/icons/CheckOutlined'
 import CloseOutlined from '@ant-design/icons/CloseOutlined'
+import { mqXsLandscape, mqXsPortrait } from 'src/themes/breakpoints';
 
 const AppTitle = styled(Typography)`
   position: relative;
@@ -34,10 +35,11 @@ const AppTitle = styled(Typography)`
 
 const DeliveryDetailsRoot = styled(Grid)`
   position: relative;
-  padding-bottom: 5em;
+  padding-bottom: 2em;
 
   ${defaultTheme.breakpoints.up('xs')} {
     padding-right: 35px;
+    padding-bottom: 5em;
 
     :after {
       content: '';
@@ -47,6 +49,15 @@ const DeliveryDetailsRoot = styled(Grid)`
       height: 100%;
       width: 1px;
       background: ${defaultTheme.palette.primary.light}
+    }
+  }
+
+  ${mqXsLandscape()} {
+    padding-right: 0px;
+    padding-bottom: 1em;
+
+    :after {
+      display: none;
     }
   }
 `
@@ -78,6 +89,10 @@ const DeliveryDetailsForm = styled(Grid)`
     :first-child {
       ${defaultTheme.breakpoints.up('xs')} {
         padding-right: 20px;
+      };
+
+      ${mqXsLandscape()} {
+        padding-right: 0;
       }
     }
   }
@@ -87,10 +102,12 @@ const DeliveryDetailsForm = styled(Grid)`
   }
 `
 
-type DeliveryDetailsProps = {} & Partial<Omit<GridProps, 'container' | 'item'>>
+type DeliveryDetailsProps = {
+  checkBoxState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+} & Partial<Omit<GridProps, 'container' | 'item'>>
 
 const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
-  const { onSubmit, ...other } = props
+  const { onSubmit, checkBoxState, ...other } = props
   const { Regex, Rules } = Validation
 
   const {
@@ -104,7 +121,7 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
   const wordCounterRef = useRef(120)
   const inputDropshipperRef = useRef({})
 
-  const [checkedState, setCheckedState] = useState(false)
+  const [checkedState, setCheckedState] = checkBoxState
 
   const commonTextFieldProps = {
     errors,
@@ -149,7 +166,7 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
       // But unchecked, value stored in ref
       fields.map(v => setValue(v, inputDropshipperRef.current[v]))
     }
-  }, [resetInputs, setValue])
+  }, [resetInputs, setCheckedState, setValue])
 
   const handleChangeTextArea = useCallback(() => {
     const value = String(watch('address'))

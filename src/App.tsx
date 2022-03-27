@@ -13,6 +13,7 @@ import { Summary } from 'src/pieces'
 // Split steps content using lazy load (optimization);
 import DynModules from './DynModules'
 import { defaultTheme } from './themes/default';
+import { Any } from './types/share';
 
 type PickGridProps = Partial<Omit<GridProps, 'container' | 'item'>>
 
@@ -41,7 +42,9 @@ const AppContent = styled(Widget)(({ theme }) => ({
 
 const Form = styled('form')`
   > * {
-    ${defaultTheme.breakpoints.up('xs')} {
+    min-height: 280px;
+
+    ${defaultTheme.breakpoints.up('sm')} {
       min-height: 500px;
     }
   }
@@ -55,6 +58,7 @@ function App() {
     handleSubmit: onSubmit,
   } = form
 
+  const checkBoxState = useState(false)
   const [activeStepState, setActiveStepState] = useState(0)
   const isLastSteps = (activeStepState + 1) === DynModules.length;
 
@@ -77,11 +81,14 @@ function App() {
       </div>
     )
 
+    // Be careful, type safe no guarantee
     const Component =
-      DynModules[activeStepState].component as React.ComponentType<PickGridProps>
+      DynModules[activeStepState].component as React.ComponentType<PickGridProps & {
+        [k: string]: Any;
+      }>
 
-    return <Component md={8} />
-  }, [activeStepState, isLastSteps])
+    return <Component checkBoxState={checkBoxState} md={8} />
+  }, [activeStepState, checkBoxState, isLastSteps])
 
   return (
     <AppContainer>
@@ -110,6 +117,7 @@ function App() {
               </Suspense>
 
               <Summary
+                checkBoxState={checkBoxState}
                 md={4}
                 onClick={handleNextStepState}
               />
