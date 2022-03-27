@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext, createContext, useMemo } from 'react';
 import styled from 'styled-components'
 import Widget from 'src/components/Widget'
-import Stepper, { StepperContext } from 'src/components/Stepper'
+import Stepper from 'src/components/Stepper'
 import Step from 'src/components/Step';
 import StepLabel from 'src/components/StepLabel';
-import LeftOutlined from '@ant-design/icons/LeftOutlined';
+
+import Grid from './components/Grid';
 
 const steps = ['Delivery', 'Payment', 'Finish']
 const AppContainer = styled.div`
@@ -14,6 +15,12 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const AppContent = styled(Widget)`
+  padding: 10px 30px;
+  height: 100%;
+  display: flex;
 `
 
 function App() {
@@ -32,13 +39,13 @@ function App() {
         ))}
       </Stepper>
 
-      <Widget sx={{
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center'
-      }} fullWidth>
-        <h2>Back</h2>
-      </Widget>
+      <AppContent fullWidth>
+        <Grid container>
+          <Grid sm={10} xs={12} item>
+            <h2>Back</h2>
+          </Grid>
+        </Grid>
+      </AppContent>
     </AppContainer>
   );
 }

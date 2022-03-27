@@ -19,6 +19,7 @@ const WidgetRoot = styled('div').withConfig<WidgetRootProps>({
   minWidth: 128,
   minHeight: 128,
   margin: 8,
+  boxSizing: 'border-box',
 
   ...(fullWidth && {
     width: '100%',

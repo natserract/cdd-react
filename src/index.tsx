@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Theme from './themes'
 import './styles/index.css';
+import './styles/grid.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
