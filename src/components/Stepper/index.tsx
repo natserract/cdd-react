@@ -2,6 +2,9 @@ import React, { useMemo } from 'react'
 import styled from "styled-components";
 
 import StepperContext from './context'
+export {
+  StepperContext
+}
 
 type ChildrenNode = {
   type: string;

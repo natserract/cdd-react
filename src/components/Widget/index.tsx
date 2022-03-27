@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 type WidgetRootProps = {
   variant?: "square" | "rounded",
+  fullWidth?: boolean;
 
   // Used for custom/additional style
   // @see: https://mui.com/system/the-sx-prop/
@@ -11,13 +12,17 @@ type WidgetRootProps = {
 
 const WidgetRoot = styled('div').withConfig<WidgetRootProps>({
   displayName: 'Widget',
-})(({ theme, variant, sx }) => ({
+})(({ theme, variant, sx, fullWidth }) => ({
   background: theme.palette.background.paper,
   color: theme.palette.text.primary,
-  boxShadow: theme.customShadows.widgetDark,
+  boxShadow: theme.customShadows.widgetWide,
   minWidth: 128,
   minHeight: 128,
   margin: 8,
+
+  ...(fullWidth && {
+    width: '100%',
+  }),
 
   ...(variant !== "square" && {
     borderRadius: theme.shape.borderRadius,
