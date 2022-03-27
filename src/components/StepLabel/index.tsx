@@ -23,17 +23,18 @@ const StepLabelRoot = styled('span').withConfig<StepLabelRootProps>({
 type StepNumberProps = {
   index: number;
   active: boolean;
+  completed: boolean;
   color?: Color
 }
 const StepNumber = styled('span')<StepNumberProps>(
-  ({ theme, color, active }) => ({
+  ({ theme, color, active, completed }) => ({
     display: 'inline-flex',
     color: theme.palette[color].main,
     backgroundColor: alpha(theme.palette[color].main, .2),
 
     width: 20,
     height: 20,
-    padding: 5,
+    padding: 16,
     borderRadius: '50%',
     textAlign: 'center',
     alignItems: 'center',
@@ -41,7 +42,7 @@ const StepNumber = styled('span')<StepNumberProps>(
     boxShadow: theme.customShadows.widgetWide,
     marginRight: 10,
 
-    ...(active && {
+    ...((active || completed) && {
       backgroundColor: theme.palette[color].main,
       color: alpha('white', 1),
     })
@@ -49,7 +50,7 @@ const StepNumber = styled('span')<StepNumberProps>(
 )
 
 type StepLabelProps = {
-  children: React.ReactNode
+  children: React.ReactNode;
 } & StepLabelRootProps & Partial<HTMLAttributes<HTMLSpanElement>>
 
 const StepLabel = React.forwardRef<HTMLSpanElement, StepLabelProps>((props, ref) => {
@@ -60,10 +61,15 @@ const StepLabel = React.forwardRef<HTMLSpanElement, StepLabelProps>((props, ref)
     ...other
   } = props
 
-  const { index, active } = useStepContext()
+  const { index, active, completed } = useStepContext()
 
   const renderNumbering = variant === 'numbering' && (
-    <StepNumber active={active} color={color} index={(index + 1)}>
+    <StepNumber
+      active={active}
+      color={color}
+      completed={completed}
+      index={(index + 1)}
+    >
       {index + 1}
     </StepNumber>
   )

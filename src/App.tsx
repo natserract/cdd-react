@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, createContext, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, Suspense } from 'react';
 import styled from 'styled-components'
 import Widget from 'src/components/Widget'
 import Stepper from 'src/components/Stepper'
@@ -7,10 +7,13 @@ import StepLabel from 'src/components/StepLabel';
 import Button from 'src/components/Button'
 import ArrowLeftOutlined from '@ant-design/icons/ArrowLeftOutlined'
 import { useForm, FormProvider } from 'react-hook-form';
-import Grid from 'src/components/Grid';
-import { Summary, DeliveryDetails } from 'src/pieces'
+import Grid, { GridProps } from 'src/components/Grid';
+import { Summary } from 'src/pieces'
 
-const steps = ['Delivery', 'Payment', 'Finish']
+// Split steps content using lazy load (optimization);
+import DynModules from './DynModules'
+
+type PickGridProps = Partial<Omit<GridProps, 'container' | 'item'>>
 
 const AppContainer = styled.div`
   background-color: #fff9e4;
@@ -39,7 +42,7 @@ function App() {
   } = form
 
   const [activeStepState, setActiveStepState] = useState(0)
-  const isLastStep = activeStepState === steps.length
+  const isLastSteps = activeStepState === DynModules.length;
 
   const handleNextStepState = useCallback(() => {
     setActiveStepState((prev) => prev + 1);
@@ -53,13 +56,26 @@ function App() {
     window.console.log('submitted')
   })
 
+  const renderStepContent = useMemo(() => {
+    if (isLastSteps) return (
+      <div>
+        Finish
+      </div>
+    )
+
+    const Component =
+      DynModules[activeStepState].component as React.ComponentType<PickGridProps>
+
+    return <Component md={8} />
+  }, [activeStepState, isLastSteps])
+
   return (
     <AppContainer>
       <Stepper activeStep={activeStepState}>
-        {steps.map((step) => (
-          <Step key={step}>
+        {DynModules.map(({ key, name }) => (
+          <Step key={key}>
             <StepLabel variant='numbering'>
-              {step}
+              {name}
             </StepLabel>
           </Step>
         ))}
@@ -67,16 +83,17 @@ function App() {
 
       <AppContent fullWidth>
         <Grid container fluid>
+          <Grid item>
+            <Button startIcon={<ArrowLeftOutlined />} noPadding>
+              Back to cart
+            </Button>
+          </Grid>
+
           <FormProvider {...form}>
             <form onSubmit={onSubmit(handleSubmit)}>
-
-              <Grid item>
-                <Button startIcon={<ArrowLeftOutlined />} noPadding>
-                  Back to cart
-                </Button>
-              </Grid>
-
-              <DeliveryDetails md={8} />
+              <Suspense fallback={<div>Loading...</div>}>
+                {renderStepContent}
+              </Suspense>
 
               <Summary
                 md={4}
