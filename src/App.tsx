@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Widget from 'src/components/Widget'
 import Stepper, { StepperContext } from 'src/components/Stepper'
 import Step from 'src/components/Step';
+import LeftOutlined from '@ant-design/icons/LeftOutlined';
 
 const steps = ['Delivery', 'Payment', 'Finish']
 const AppContainer = styled.div`

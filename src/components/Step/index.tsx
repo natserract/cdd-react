@@ -3,9 +3,11 @@ import { Any } from "src/types/share";
 import styled from "styled-components";
 
 import { StepperContext } from "../Stepper";
+import StepIcon from '../StepIcon'
 
 import { StepContext, useStepContext } from './context'
 import { StepContextType } from "./types";
+
 
 export {
   StepContext,
@@ -14,14 +16,19 @@ export {
 
 type StepProps = {
   children: React.ReactNode;
+  icon?: React.ReactNode;
+  color?: "primary" | "secondary" | "error" | "success" | "info"
 } & Partial<StepContextType> & Partial<HTMLAttributes<HTMLDivElement>>;
 
-const StepperRoot = styled('div').withConfig<StepProps>({
-  displayName: 'Stepper'
-})((_props) => ({
+const StepRoot = styled('div').withConfig<StepProps>({
+  displayName: 'Step'
+})(({ theme, color }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
+
+  color: theme.palette[color].main,
+  fontWeight: 500,
 }))
 
 const Step = React.forwardRef<Any, StepProps>((props, ref) => {
@@ -32,10 +39,12 @@ const Step = React.forwardRef<Any, StepProps>((props, ref) => {
     completed: completedProp,
     disabled: disabledProp,
     last,
+    icon,
+    color = "primary",
     ...other
   } = props
 
-  const { activeStep, orientation } = useContext(StepperContext)
+  const { activeStep, orientation, total } = useContext(StepperContext)
 
   let [active = false, completed = false, disabled = false] = [
     activeProp,
@@ -69,17 +78,27 @@ const Step = React.forwardRef<Any, StepProps>((props, ref) => {
     completed,
     disabled,
     orientation,
+    color,
   }
+
+  const isLastIndex = (index + 1) === total
+  const renderStepIcon = !isLastIndex && (
+    <StepIcon
+      color={color}
+      icon={icon}
+    />
+  )
 
   return (
     <StepContext.Provider value={value}>
-      <StepperRoot
+      <StepRoot
         ref={ref}
         {...rootProps}
         {...other}
       >
         {children}
-      </StepperRoot>
+      </StepRoot>
+      {renderStepIcon}
     </StepContext.Provider>
   )
 })

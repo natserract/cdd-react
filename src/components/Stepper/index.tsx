@@ -27,6 +27,12 @@ const StepperRoot = styled('div').withConfig<StepperRootProps>({
   flexDirection: 'row',
   alignItems: 'center',
 
+  "& > *": {
+    "&:not(:last-child)": {
+      marginRight: 25,
+    }
+  },
+
   ...sx,
 }))
 
@@ -61,7 +67,12 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>((props, ref) => {
   const value = useMemo(() => ({
     activeStep,
     orientation,
-  }), [activeStep, orientation])
+    total: childrens.length,
+  }), [
+    activeStep,
+    orientation,
+    childrens
+  ])
 
   return (
     <StepperContext.Provider value={value}>
