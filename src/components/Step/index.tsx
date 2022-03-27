@@ -8,7 +8,6 @@ import StepIcon from '../StepIcon'
 import { StepContext, useStepContext } from './context'
 import { StepContextType } from "./types";
 
-
 export {
   StepContext,
   useStepContext,

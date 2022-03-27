@@ -22,7 +22,7 @@ type StepperRootProps = {
 
 const StepperRoot = styled('div').withConfig<StepperRootProps>({
   displayName: 'Stepper',
-})(({ sx }) => ({
+})(({ theme, sx }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -30,6 +30,10 @@ const StepperRoot = styled('div').withConfig<StepperRootProps>({
   "& > *": {
     "&:not(:last-child)": {
       marginRight: 25,
+
+      [`${theme.breakpoints.down('xs')}`]: {
+        marginRight: 15,
+      },
     }
   },
 

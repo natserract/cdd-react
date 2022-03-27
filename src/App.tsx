@@ -12,6 +12,7 @@ import { Summary } from 'src/pieces'
 
 // Split steps content using lazy load (optimization);
 import DynModules from './DynModules'
+import { defaultTheme } from './themes/default';
 
 type PickGridProps = Partial<Omit<GridProps, 'container' | 'item'>>
 
@@ -21,17 +22,30 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ${defaultTheme.breakpoints.down('xs')} {
+    padding: 20px;
+  }
 `
 const AppContent = styled(Widget)(({ theme }) => ({
   padding: 30,
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
+  marginTop: 15,
 
   [`${theme.breakpoints.down('xs')}`]: {
     padding: '20px 10px',
   }
 }))
+
+const Form = styled('form')`
+  > * {
+    ${defaultTheme.breakpoints.up('xs')} {
+      min-height: 500px;
+    }
+  }
+`
 
 function App() {
   const form = useForm({
@@ -42,7 +56,7 @@ function App() {
   } = form
 
   const [activeStepState, setActiveStepState] = useState(0)
-  const isLastSteps = activeStepState === DynModules.length;
+  const isLastSteps = (activeStepState + 1) === DynModules.length;
 
   const handleNextStepState = useCallback(() => {
     setActiveStepState((prev) => prev + 1);
@@ -90,7 +104,7 @@ function App() {
           </Grid>
 
           <FormProvider {...form}>
-            <form onSubmit={onSubmit(handleSubmit)}>
+            <Form onSubmit={onSubmit(handleSubmit)}>
               <Suspense fallback={<div>Loading...</div>}>
                 {renderStepContent}
               </Suspense>
@@ -99,7 +113,7 @@ function App() {
                 md={4}
                 onClick={handleNextStepState}
               />
-            </form>
+            </Form>
           </FormProvider>
         </Grid>
       </AppContent>

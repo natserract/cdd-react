@@ -40,7 +40,7 @@ const TextFieldLabel = styled.label`
 const TextFieldHelper = styled(Typography) <{
   isError?: boolean
 }>`
-  color: ${props => props.isError ? props.theme.palette.primary.main : 'rgba(0, 0, 0, 0.6)'};
+  color: ${props => props.isError ? props.theme.palette.error.main : 'rgba(0, 0, 0, 0.4)'};
   font-weight: 400;
   font-size: .8rem;
   line-height: 1.66;

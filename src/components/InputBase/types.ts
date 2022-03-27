@@ -30,7 +30,7 @@ export type InputBaseProps<T = HTMLInputElement | HTMLTextAreaElement> = Optiona
     color?: "primary" | "secondary" | "success" | "error" | "info"
     variant?: "outlined" | "filled" | "standard"
     inputComponent?: string;
-    sx?: React.CSSProperties
+    sx?: React.CSSProperties | { [p: string]: Any }
 
     // Errors
     isError?: boolean

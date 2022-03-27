@@ -1,5 +1,5 @@
 import React from 'react'
-import { TypeObject } from 'src/types/share';
+import { Any, TypeObject } from 'src/types/share';
 import styled from "styled-components";
 import { defaultTheme } from "src/themes/default";
 import alpha from 'color-alpha'
@@ -23,9 +23,11 @@ const commonIconStyles = (size: Size) => ({
   }),
 });
 
-const commonFontSizeStyles = (size: Size) => ({
+const commonButtonSizeStyles = (size: Size) => ({
   ...(size === 'small' && {
     fontSize: 13,
+    minWidth: 54,
+    minHeight: 25,
   }),
 
   ...(size === 'medium' && {
@@ -34,6 +36,8 @@ const commonFontSizeStyles = (size: Size) => ({
 
   ...(size === 'large' && {
     fontSize: 17,
+    minWidth: 64,
+    minHeight: 55,
   }),
 })
 
@@ -44,11 +48,12 @@ type ButtonRootProps = {
   variant?: "contained" | "outlined" | "text"
   disabled?: boolean
   type?: string
-  sx?: React.CSSProperties,
+  sx?: React.CSSProperties | { [p: string]: Any },
   startIcon?: React.ReactNode
   endIcon?: React.ReactNode
   size?: Size,
   noPadding?: boolean;
+  fullWidth?: boolean;
 }
 
 const buttonColorUtility = (color: ButtonColor) => {
@@ -63,7 +68,7 @@ const buttonColorUtility = (color: ButtonColor) => {
 
 const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   displayName: 'Button',
-})(({ sx, variant, disabled, color, size, noPadding }) => ({
+})(({ sx, variant, disabled, color, size, noPadding, fullWidth }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -81,6 +86,10 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   minWidth: 64,
   minHeight: 35,
   transition: '.1s all ease-in-out',
+
+  ...(fullWidth && {
+    width: '100%',
+  }),
 
   ...(variant === "text") && {
     backgroundColor: 'transparent',
@@ -101,7 +110,7 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   }),
   // End Background color
 
-  ...commonFontSizeStyles(size),
+  ...commonButtonSizeStyles(size),
   ...(disabled && {
     opacity: .5,
   }),

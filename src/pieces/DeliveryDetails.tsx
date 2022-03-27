@@ -26,6 +26,10 @@ const AppTitle = styled(Typography)`
     opacity: .5;
     mix-blend-mode: darken;
   }
+
+  ${defaultTheme.breakpoints.down('xs')} {
+    max-width: 200px;
+  }
 `
 
 const DeliveryDetailsRoot = styled(Grid)`
@@ -62,6 +66,10 @@ const DeliveryDetailsHeader = styled(Grid)`
     ${defaultTheme.breakpoints.up('xs')} {
       padding-right: 30px;
     };
+
+    ${defaultTheme.breakpoints.down('xs')} {
+      justify-content: flex-start;
+    }
   }
 `
 
@@ -185,7 +193,11 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
       </DeliveryDetailsHeader>
 
       <DeliveryDetailsForm item>
-        <Grid md={7} item>
+        <Grid md={7} sx={{
+          [`${defaultTheme.breakpoints.down('xs')}`]: {
+            marginBottom: 40,
+          }
+        }} item>
           <TextField
             label="Email"
             name='email'

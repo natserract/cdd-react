@@ -13,11 +13,16 @@ type StepLabelRootProps = {
 
 const StepLabelRoot = styled('span').withConfig<StepLabelRootProps>({
   displayName: 'StepLabel'
-})(({ theme, color }) => ({
+})(({ theme, color, variant }) => ({
   color: theme.palette[color].main,
   fontWeight: 500,
   display: "flex",
   alignItems: "center",
+  fontSize: 16,
+
+  [`${theme.breakpoints.down('xs')}`]: {
+    fontSize: variant === 'standard' ? 14 : 0,
+  }
 }))
 
 type StepNumberProps = {
@@ -45,7 +50,11 @@ const StepNumber = styled('span')<StepNumberProps>(
     ...((active || completed) && {
       backgroundColor: theme.palette[color].main,
       color: alpha('white', 1),
-    })
+    }),
+
+    [`${theme.breakpoints.down('xs')}`]: {
+      fontSize: 14,
+    }
   })
 )
 

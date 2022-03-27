@@ -7,18 +7,43 @@ import Button from 'src/components/Button'
 const SummaryRoot = styled(Grid)`
   height: 100%;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   ${defaultTheme.breakpoints.up('xs')} {
-    padding: 20px 25px 0;
+    padding: 20px 0 0 25px;
   }
 `
+
+const SxItemSummaryContainer = {
+  "& > div:not(:last-child)": {
+    marginBottom: 15,
+  }
+}
+const SxItemSummaryText = {
+  "& > div:last-child": {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  }
+}
+
+const SxItemSummaryTotal = {
+  margin: '15px 0 30px'
+}
 
 type BaseProps = {}
 type SummaryProps = BaseProps & Partial<Omit<GridProps, 'container' | 'item'>>
 
 const Summary: React.FC<SummaryProps> = (props) => {
   const {
+    onClick,
     ...other
   } = props
+
+  const handleClickButton = (e) => {
+    onClick(e)
+  }
 
   return (
     <SummaryRoot item {...other}>
@@ -31,30 +56,43 @@ const Summary: React.FC<SummaryProps> = (props) => {
       </Typography>
 
       <Grid item>
-        {/* Cost of goods */}
-        <Grid item>
-          <Grid md={6} item>
-            Cost of goods
+        <Grid sx={SxItemSummaryContainer} item>
+          {/* Cost of goods */}
+          <Grid sx={SxItemSummaryText} item>
+            <Grid md={6} item>
+              Cost of goods
+            </Grid>
+            <Grid md={6} item>
+              <Typography bolder>500,000</Typography>
+            </Grid>
           </Grid>
-          <Grid md={6} item>
-            500,000
-          </Grid>
-        </Grid>
-        {/* End Cost of goods */}
+          {/* End Cost of goods */}
 
-        {/* Dropshiping fee */}
-        <Grid item>
-          <Grid md={6} item>
-            Dropshiping Fee
+          {/* Dropshiping fee */}
+          <Grid sx={SxItemSummaryText} item>
+            <Grid md={6} item>
+              Dropshiping Fee
+            </Grid>
+            <Grid md={6} item>
+              <Typography bolder>5,900</Typography>
+            </Grid>
           </Grid>
-          <Grid md={6} item>
-            5,900
+          {/* End Dropshiping fee */}
+
+          {/* Total */}
+          <Grid sx={{ ...SxItemSummaryText, ...SxItemSummaryTotal }} item>
+            <Grid md={6} item>
+              <Typography color='textPrimary' variant='h3' bolder>Total</Typography>
+            </Grid>
+            <Grid md={6} item>
+              <Typography color='textPrimary' variant='h3' bolder>505,900</Typography>
+            </Grid>
           </Grid>
+          {/* End Total */}
         </Grid>
-        {/* End Dropshiping fee */}
 
         {/* Action */}
-        <Button color='primary' size='large' variant='contained'>
+        <Button color='primary' size='large' variant='contained' fullWidth onClick={handleClickButton}>
           Continue To Payment
         </Button>
         {/* End Action */}

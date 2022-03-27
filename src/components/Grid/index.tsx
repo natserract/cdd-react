@@ -1,5 +1,5 @@
 import React from 'react';
-import { Conditional, HTMLAttributes } from 'src/types/share';
+import { Any, Conditional, HTMLAttributes } from 'src/types/share';
 import styled from "styled-components"
 
 type QuerySize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -10,7 +10,7 @@ type Query = {
 }
 
 type BaseProps = {
-  sx?: React.CSSProperties;
+  sx?: React.CSSProperties | { [p: string]: Any };
 }
 
 type GridRootProps = Conditional<{
