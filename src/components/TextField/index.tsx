@@ -15,24 +15,22 @@ const TextFieldContainer = styled.div.withConfig({
 })`
   display: flex;
   flex-direction: column;
-  padding: 25px;
   position: relative;
 `
 
 const TextFieldLabel = styled.label`
   position: absolute;
-  left: 20px;
-  top: calc(1.2em + 0.79em);
+  left: 0;
+  top: 0;
   color: #999;
   font-weight: normal;
   opacity: 0.75;
   order: 1;
   display: block;
-  padding-left: 7px;
   text-shadow: none;
   text-transform: capitalize;
   transform-origin: left top 0px;
-  transform: translate(14px, 16px) scale(1);
+  transform: translate(14px, 15px) scale(1);
   transition: 200ms ease all;
   max-width: calc(100% - 24px);
   z-index: 1;
@@ -85,7 +83,7 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   color: '#000',
   flex: '1 1 auto',
   order: 2,
-  height: '1.2em',
+  height: '1.3em',
 
   "&:focus": {
     outline: 0,
@@ -109,7 +107,7 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   },
   [`&:focus + ${TextFieldLabel}, &.focus + ${TextFieldLabel}`]: {
     opacity: 1,
-    transform: 'translate(14px, 3px) scale(0.65)',
+    transform: 'translate(14px, 7px) scale(0.65)',
   },
 
   ...(startAdornment && {

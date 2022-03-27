@@ -12,7 +12,7 @@ import { InputBaseProps } from './types'
 const InputBaseRoot = styled.input.withConfig<Omit<InputBaseProps, 'name' | 'control'>>({
     displayName: 'InputBase'
 })(() => ({
-    padding: '16.5px 14px',
+    padding: '20px 14px',
     fontSize: '1rem',
 }))
 

@@ -9,6 +9,10 @@ type Query = {
   xs: QuerySize;
 }
 
+type BaseProps = {
+  sx?: React.CSSProperties;
+}
+
 type GridRootProps = Conditional<{
   container: boolean,
   fluid?: boolean;
@@ -20,18 +24,20 @@ type GridRootProps = Conditional<{
     item: boolean;
   } & {
     [K in keyof Partial<Query>]: Query[K]
-  }>
+  }> & BaseProps
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const GridRoot = styled('div').attrs<GridRootProps>(({ fluid }) => ({
   className: fluid ? 'container-fluid' : 'container'
-})).withConfig({
+})).withConfig<GridRootProps>({
   displayName: 'Grid'
-})((_props) => ({}))
+})(({ sx }) => ({
+  ...sx,
+}))
 
 
-type GridColumnProps = Partial<Query>
+type GridColumnProps = {} & BaseProps & Partial<Query>
 
 const GridColumn = styled('div').attrs<GridColumnProps>(({
   xs,
@@ -43,9 +49,11 @@ const GridColumn = styled('div').attrs<GridColumnProps>(({
     ${sm ? `sm-${String(sm)}` : ''}
     ${xs ? `xs-${String(xs)}` : ''}
   `).trimEnd()
-})).withConfig({
+})).withConfig<GridColumnProps>({
   displayName: 'GridColumn'
-})(() => ({}))
+})(({ sx }) => ({
+  ...sx,
+}))
 
 type GridProps = {
   children: React.ReactNode;
@@ -59,6 +67,7 @@ const Grid = React.forwardRef<HTMLDivElement, GridProps>((props, ref) => {
     xs,
     sm,
     md = 12,
+    sx,
     ...other
   } = props
 
@@ -77,12 +86,13 @@ const Grid = React.forwardRef<HTMLDivElement, GridProps>((props, ref) => {
     xs,
     sm,
     md,
+
   }
 
   const renderGrid = () => {
     if (!container && item) {
       return (
-        <GridColumn {...columnProps}>
+        <GridColumn sx={sx} {...columnProps} {...props}>
           {children}
         </GridColumn>
       )
@@ -91,6 +101,7 @@ const Grid = React.forwardRef<HTMLDivElement, GridProps>((props, ref) => {
     return (
       <GridRoot
         ref={ref}
+        sx={sx}
         {...other}
       >
         {children}

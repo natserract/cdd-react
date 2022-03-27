@@ -48,6 +48,7 @@ type ButtonRootProps = {
   startIcon?: React.ReactNode
   endIcon?: React.ReactNode
   size?: Size,
+  noPadding?: boolean;
 }
 
 const buttonColorUtility = (color: ButtonColor) => {
@@ -62,7 +63,7 @@ const buttonColorUtility = (color: ButtonColor) => {
 
 const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   displayName: 'Button',
-})(({ sx, variant, disabled, color, size }) => ({
+})(({ sx, variant, disabled, color, size, noPadding }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -72,7 +73,7 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
   border: 0,
   margin: 0,
   borderRadius: 3,
-  padding: '10px 23px 12px',
+  padding: !noPadding ? '10px 23px 12px' : 0,
   color: color === 'inherit' ? 'inherit' : (
     variant !== 'text' ? alpha('white', 1) : buttonColorUtility(color).main
   ),

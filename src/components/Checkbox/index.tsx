@@ -32,7 +32,9 @@ const CheckboxInput = styled(InputBase).attrs<HTMLInputElement>({ type: 'checkbo
   width: 1px;
 `
 const CheckboxWrapper = styled('div')<CheckboxProps>(({ variant, checked, color }) => ({
-  display: 'inline-block',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   width: '16px',
   height: '16px',
 
