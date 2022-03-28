@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Checkbox from 'src/components/Checkbox';
 import Grid, { GridProps } from 'src/components/Grid';
@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import Validation from 'src/static/validation';
 import CheckOutlined from '@ant-design/icons/CheckOutlined'
 import CloseOutlined from '@ant-design/icons/CloseOutlined'
-import { mqXsLandscape, mqXsPortrait } from 'src/themes/breakpoints';
+import { mqXsLandscape } from 'src/themes/breakpoints';
 
 const AppTitle = styled(Typography)`
   position: relative;
@@ -140,9 +140,6 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
       endAdornment: errors[name] ? <CloseOutlined /> : <CheckOutlined />,
     }),
   })
-
-  // Used for debug form values
-  // console.log('watch', watch())
 
   const resetInputs = useCallback((fields: string[]) => {
     // eslint-disable-next-line array-callback-return

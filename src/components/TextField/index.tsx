@@ -1,6 +1,6 @@
 
 import clsx from 'clsx'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useCallback } from 'react'
 import styled from 'styled-components'
 import useForkRef from '@rooks/use-fork-ref'
@@ -217,6 +217,15 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
     setIsActive(false)
     setActiveIconOnChangeState(false)
   });
+
+
+  useEffect(() => {
+    if (control._formValues[name]) {
+      console.log('control', control._formValues[name])
+      setIsActive(true);
+      setClasses('focus')
+    }
+  }, [control._formValues, name])
 
   const handleChange = useCallback((e) => {
     const value = e.target.value

@@ -14,6 +14,9 @@ import { Summary } from 'src/pieces'
 import DynModules from './DynModules'
 import { defaultTheme } from './themes/default';
 import { Any } from './types/share';
+import { usePersistForm } from './hooks/usePersistForm';
+import Config from './static/config';
+import { getItem } from './utils/storage';
 
 type PickGridProps = Partial<Omit<GridProps, 'container' | 'item'>>
 
@@ -51,14 +54,24 @@ const Form = styled('form')`
 `
 
 function App() {
+  const { FormDataKey } = Config;
+
+  const formDataPersist = getItem(FormDataKey)
   const form = useForm({
-    mode: 'onChange'
+    mode: 'onChange',
+    defaultValues: {
+      ...formDataPersist,
+    }
   })
   const {
+    watch,
     handleSubmit: onSubmit,
   } = form
 
-  const checkBoxState = useState(false)
+  // getValues periodically retrieves the form data
+  usePersistForm({ value: watch(), localStorageKey: FormDataKey });
+
+  const checkBoxState = useState(formDataPersist?.check)
   const [activeStepState, setActiveStepState] = useState(0)
   const isLastSteps = (activeStepState + 1) === DynModules.length;
 

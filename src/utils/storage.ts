@@ -15,11 +15,7 @@ export function getItem(key: string) {
   return JSON.parse(localStorage.getItem(key) ?? lack)
 }
 
-/**
-* Check if localStorage has an Item / exists with the give key
-* @param key the key of the Item
-*/
-export function localStorageHasItem(key: string) {
+export function hasItem(key: string) {
   return localStorage.getItem(key) !== null;
 }
 
