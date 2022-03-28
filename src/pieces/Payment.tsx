@@ -102,11 +102,12 @@ const eWalletSaldo = 1500000
 type PaymentProps = {}
 
 const Payment: React.FC<PaymentProps> = () => {
-  const { control, setValue, watch, getValues } = useFormContext()
+  const { control, setValue, watch, trigger } = useFormContext()
   const { Shipment, Payment } = Business;
 
   const { shipmentName, shipmentPrice, paymentMethod } = paymentInputName
   const shimpentNameState = watch(shipmentName) || Shipment.GoSend.name;
+  const shimpentPriceState = watch(shipmentPrice) || Shipment.GoSend.price;
   const paymentMethodState = watch(paymentMethod) || Payment[0];
 
   const [shipmentState, setShipmentState] = useState(shimpentNameState || Shipment.GoSend.name)
@@ -127,28 +128,29 @@ const Payment: React.FC<PaymentProps> = () => {
     })
   }, [paymentMethod, setValue])
 
-  const handleClickShipment = ({ name, price }) => {
+  const handleClickShipment = useCallback(({ name, price }) => {
     setShipmentState(name)
     handleShipmentValue({ name, price })
-  }
+  }, [handleShipmentValue])
 
-  const handleClickPayment = (name) => {
+  const handleClickPayment = useCallback((name) => {
     setPaymentState(name)
     handlePaymentValue({ name })
-  }
-
-  // Setting default value persisted
+  }, [handlePaymentValue])
 
   useEffect(() => {
-    // handleShipmentValue({
-    //   name: shimpentNameState || Shipment.GoSend.name,
-    //   price: shimpentPriceState || Shipment.GoSend.price
-    // });
-
-    // handlePaymentValue({
-    //   name: paymentMethodState || Payment[0]
-    // })
-  }, [shimpentNameState])
+    handleClickShipment({
+      name: shimpentNameState,
+      price: shimpentPriceState,
+    })
+    handleClickPayment(paymentMethodState)
+  }, [
+    handleClickPayment,
+    handleClickShipment,
+    paymentMethodState,
+    shimpentNameState,
+    shimpentPriceState
+  ])
 
   return (
     <PaymentContainer item>

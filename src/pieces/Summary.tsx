@@ -6,8 +6,9 @@ import { formatMoney } from 'src/utils/format';
 import { useFormContext } from 'react-hook-form';
 import React, { useCallback } from 'react';
 import Business, { getShipmentData } from 'src/static/business';
-import { isCurrentStepOf } from 'src/utils/step';
+import { isCurrentStepOf, isLastStep } from 'src/utils/step';
 import { Any } from 'src/types/share';
+import { useStepContext } from 'src/components/Step';
 
 const totalPrice = (values: { [k: string]: Any }) => {
   return Object.values(values).reduce((acc, curr) => acc + curr)
@@ -22,7 +23,6 @@ const shipmentEstimate = (getValues) => {
       ${getValues('shipmentName') || defaultValue}
     `
 }
-
 
 const SxItemSummaryContainer = {
   "& > div:not(:last-child)": {
@@ -71,16 +71,16 @@ const Summary: React.FC<SummaryProps> = (props) => {
   const { Dropship } = Business
 
   const { watch, formState: { errors, isValid }, getValues } = useFormContext()
+
   const isFormValid = !Object.entries(errors).length && isValid
   const checkedState = watch('check');
 
   const [activeStepState, setActiveStepState] = stepState
-  const isPaymentStep = isCurrentStepOf(activeStepState, 'Payment')
+  const lastStep = isLastStep(activeStepState)
 
   const handleNextStepState = useCallback(() => {
     setActiveStepState((prev) => prev + 1);
   }, [setActiveStepState])
-
 
   const getTotalPrice = {
     costOfGoods: getValues('costOfGoods') || 0,
@@ -100,7 +100,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
         </Typography>
 
         {/* Delivery Estimation */}
-        {isPaymentStep && (
+        {Boolean(watch('shipmentName')) && (
           <Grid sx={SxItemDeliveryEstimation} item>
             <Grid item>
               <Typography sx={{ marginBottom: '5px', display: 'block' }}>
@@ -144,7 +144,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
           )}
           {/* End Dropshiping fee */}
 
-          {isPaymentStep && <Grid sx={SxItemSummaryText} item>
+          {Boolean(watch('shipmentName')) && <Grid sx={SxItemSummaryText} item>
             <Grid md={6} sm={6} xs={6} item>
               Go Send Shipment
             </Grid>
@@ -173,7 +173,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
         </Grid>
 
         {/* Action */}
-        <Button
+        {!lastStep && <Button
           color='primary'
           disabled={!isFormValid}
           size='large'
@@ -182,7 +182,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
           onClick={handleNextStepState}
         >
           Continue To Payment
-        </Button>
+        </Button>}
         {/* End Action */}
       </Grid>
     </React.Fragment>
