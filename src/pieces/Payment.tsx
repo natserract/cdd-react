@@ -57,6 +57,10 @@ const OutlinedButtonRoot = styled(Button)<OutlinedButtonRootProps>(({ theme, act
       fontSize: 18,
     })
   },
+
+  [`${theme.breakpoints.down('xs')}`]: {
+    justifyContent: 'space-between',
+  },
 }))
 
 type OutlinedButtonProps = {
@@ -102,7 +106,7 @@ const eWalletSaldo = 1500000
 type PaymentProps = {}
 
 const Payment: React.FC<PaymentProps> = () => {
-  const { control, setValue, watch, trigger } = useFormContext()
+  const { control, setValue, watch } = useFormContext()
   const { Shipment, Payment } = Business;
 
   const { shipmentName, shipmentPrice, paymentMethod } = paymentInputName

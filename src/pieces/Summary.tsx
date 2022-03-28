@@ -46,7 +46,7 @@ const SxItemSummaryTotal = {
   }
 }
 
-const SxItemDeliveryEstimation = {
+const SxItemPayment = {
   position: 'relative',
   margin: '30px 0 0',
   padding: '20px 0 0',
@@ -68,7 +68,7 @@ type SummaryProps = {
 
 const Summary: React.FC<SummaryProps> = (props) => {
   const { stepState } = props
-  const { Dropship } = Business
+  const { Dropship, Payment, } = Business
 
   const { watch, formState: { errors, isValid }, getValues } = useFormContext()
 
@@ -90,7 +90,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
 
   return (
     <React.Fragment>
-      <Grid item>
+      <Grid sx={{ paddingBottom: 30 }} item>
         <Typography color='textPrimary' component='h2' variant='h2' bolder>
           Summary
 
@@ -101,7 +101,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
 
         {/* Delivery Estimation */}
         {Boolean(watch('shipmentName')) && (
-          <Grid sx={SxItemDeliveryEstimation} item>
+          <Grid sx={SxItemPayment} item>
             <Grid item>
               <Typography sx={{ marginBottom: '5px', display: 'block' }}>
                 Delivery Estimation
@@ -115,6 +115,21 @@ const Summary: React.FC<SummaryProps> = (props) => {
           </Grid>
         )}
         {/* End Delivery Estimation */}
+
+        {Boolean(watch('paymentMethod')) && (
+          <Grid sx={SxItemPayment} item>
+            <Grid item>
+              <Typography sx={{ marginBottom: '5px', display: 'block' }}>
+                Payment Method
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography color='success' variant='h6' bolder>
+                {getValues('paymentMethod') || Payment[0]}
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
 
       <Grid item>
