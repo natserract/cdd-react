@@ -106,7 +106,9 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
     backgroundColor: buttonColorUtility(color).main,
 
     "&:hover": {
-      backgroundColor: alpha(buttonColorUtility(color).dark, .9)
+      ...(!disabled && {
+        backgroundColor: alpha(buttonColorUtility(color).dark, .9)
+      })
     }
   }),
   // End Background color

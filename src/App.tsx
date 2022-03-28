@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, Suspense } from 'react';
+import React, { useState, useMemo, Suspense } from 'react';
 import styled from 'styled-components'
 import Widget from 'src/components/Widget'
 import Stepper from 'src/components/Stepper'
@@ -123,7 +123,7 @@ function App() {
   const isLastSteps = (activeStepState + 1) === DynModules.length;
 
   const handleSubmit = (async () => {
-    window.console.log('submitted')
+    window.console.log('values', form.getValues())
   })
 
   const renderStepContent = useMemo(() => {
@@ -138,7 +138,8 @@ function App() {
     return <Component />
   }, [activeStepState, isLastSteps])
 
-  console.log('watch', watch())
+  // Debug values
+  // console.log('watch', watch())
 
   return (
     <AppContainer>

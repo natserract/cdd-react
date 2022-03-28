@@ -66,6 +66,7 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
     watch,
     formState: { errors },
     setValue,
+    trigger,
     unregister,
   } = useFormContext()
 
@@ -118,8 +119,10 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
       // We need persist if has value
       // But unchecked, value stored in ref
       fields.map(v => setValue(v, inputDropshipperRef.current[v]))
+
+      trigger(['dropshipperName', 'dropshipperPhoneNumber'])
     }
-  }, [Dropship.fee.number, resetInputs, setValue])
+  }, [Dropship.fee.number, trigger, resetInputs, setValue])
 
   const handleChangeTextArea = useCallback(() => {
     const value = String(watch('address'))
@@ -218,7 +221,6 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
             label="Dropshipper Name"
             name='dropshipperName'
             required={checkboxState}
-            rules={{ validate: (v) => Boolean(v) }}
             onChange={handleChangeDropshipText}
             {...textFieldDropshipperProps('dropshipperName')}
           />
@@ -231,7 +233,6 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
             required={checkboxState}
             rules={{
               pattern: Regex.phonePattern,
-              validate: (v) => Boolean(v)
             }}
             type='tel'
             onChange={handleChangeDropshipText}
