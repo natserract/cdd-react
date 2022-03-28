@@ -5,22 +5,8 @@ import styled from 'styled-components'
 import Button from 'src/components/Button'
 import { formatMoney } from 'src/utils/format';
 import { mqXsLandscape, } from 'src/themes/breakpoints';
-
-const SummaryRoot = styled(Grid)`
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  ${defaultTheme.breakpoints.up('xs')} {
-    padding: 20px 0 0 25px;
-  };
-
-  ${mqXsLandscape()} {
-    padding-left: 0px;
-  }
-`
+import { useFormContext } from 'react-hook-form';
+import React from 'react';
 
 const SxItemSummaryContainer = {
   "& > div:not(:last-child)": {
@@ -44,26 +30,20 @@ const SxItemSummaryTotal = {
   }
 }
 
-type BaseProps = {
-  checkBoxState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+type SummaryProps = {
+  onClick: Function
 }
-type SummaryProps = BaseProps & Partial<Omit<GridProps, 'container' | 'item'>>
 
 const Summary: React.FC<SummaryProps> = (props) => {
-  const {
-    onClick,
-    checkBoxState,
-    ...other
-  } = props
-
-  const [checkedState] = checkBoxState
+  const { watch } = useFormContext()
+  const checkedState = watch('check');
 
   const handleClickButton = (e) => {
-    onClick(e)
+    props.onClick(e)
   }
 
   return (
-    <SummaryRoot item {...other}>
+    <React.Fragment>
       <Typography color='textPrimary' component='h2' variant='h2' bolder>
         Summary
 
@@ -120,7 +100,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
         </Button>
         {/* End Action */}
       </Grid>
-    </SummaryRoot>
+    </React.Fragment>
   )
 }
 

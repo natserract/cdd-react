@@ -1,9 +1,8 @@
-import { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Checkbox from 'src/components/Checkbox';
 import Grid, { GridProps } from 'src/components/Grid';
 import TextField from 'src/components/TextField';
-import Typography from 'src/components/Typography';
 import { defaultTheme } from 'src/themes/default';
 import { Any } from 'src/types/share';
 import styled from 'styled-components'
@@ -12,55 +11,8 @@ import CheckOutlined from '@ant-design/icons/CheckOutlined'
 import CloseOutlined from '@ant-design/icons/CloseOutlined'
 import { mqXsLandscape } from 'src/themes/breakpoints';
 
-const AppTitle = styled(Typography)`
-  position: relative;
-  display: inline-block;
+import Title from './Title';
 
-  :after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 5px;
-    width: 105%;
-    height: 8px;
-    background: #ececec;
-    opacity: .5;
-    mix-blend-mode: darken;
-  }
-
-  ${defaultTheme.breakpoints.down('xs')} {
-    max-width: 200px;
-  }
-`
-
-const DeliveryDetailsRoot = styled(Grid)`
-  position: relative;
-  padding-bottom: 2em;
-
-  ${defaultTheme.breakpoints.up('xs')} {
-    padding-right: 35px;
-    padding-bottom: 5em;
-
-    :after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: 1px;
-      background: ${defaultTheme.palette.primary.light}
-    }
-  }
-
-  ${mqXsLandscape()} {
-    padding-right: 0px;
-    padding-bottom: 1em;
-
-    :after {
-      display: none;
-    }
-  }
-`
 const DeliveryDetailsHeader = styled(Grid)`
   margin: 25px 0 45px;
 
@@ -102,12 +54,9 @@ const DeliveryDetailsForm = styled(Grid)`
   }
 `
 
-type DeliveryDetailsProps = {
-  checkBoxState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
-} & Partial<Omit<GridProps, 'container' | 'item'>>
+type DeliveryDetailsProps = {}
 
-const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
-  const { onSubmit, checkBoxState, ...other } = props
+const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
   const { Regex, Rules } = Validation
 
   const {
@@ -121,7 +70,8 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
   const wordCounterRef = useRef(120)
   const inputDropshipperRef = useRef({})
 
-  const [checkedState, setCheckedState] = checkBoxState
+  const checkboxState = watch('check');
+  const [checkedState, setCheckedState] = useState(checkboxState)
 
   const commonTextFieldProps = {
     errors,
@@ -185,12 +135,12 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
   }, [])
 
   return (
-    <DeliveryDetailsRoot item {...other}>
+    <React.Fragment>
       <DeliveryDetailsHeader item>
         <Grid md={6} item>
-          <AppTitle color='textPrimary' component='h1' variant='h1' bolder>
+          <Title color='textPrimary' component='h1' variant='h1' bolder>
             Delivery Details
-          </AppTitle>
+          </Title>
         </Grid>
 
         <Grid md={6} item>
@@ -271,7 +221,7 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = (props) => {
           />
         </Grid>
       </DeliveryDetailsForm>
-    </DeliveryDetailsRoot>
+    </React.Fragment>
   )
 }
 

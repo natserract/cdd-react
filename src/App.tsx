@@ -7,18 +7,16 @@ import StepLabel from 'src/components/StepLabel';
 import Button from 'src/components/Button'
 import ArrowLeftOutlined from '@ant-design/icons/ArrowLeftOutlined'
 import { useForm, FormProvider } from 'react-hook-form';
-import Grid, { GridProps } from 'src/components/Grid';
+import Grid from 'src/components/Grid';
 import { Summary } from 'src/pieces'
 
-// Split steps content using lazy load (optimization);
 import DynModules from './DynModules'
 import { defaultTheme } from './themes/default';
 import { Any } from './types/share';
 import { usePersistForm } from './hooks/usePersistForm';
 import Config from './static/config';
 import { getItem } from './utils/storage';
-
-type PickGridProps = Partial<Omit<GridProps, 'container' | 'item'>>
+import { mqXsLandscape } from './themes/breakpoints';
 
 const AppContainer = styled.div`
   background-color: #fff9e4;
@@ -42,6 +40,51 @@ const AppContent = styled(Widget)(({ theme }) => ({
     padding: '20px 10px',
   }
 }))
+
+const AsideLeft = styled(Grid)`
+  position: relative;
+  padding-bottom: 2em;
+
+  ${defaultTheme.breakpoints.up('xs')} {
+    padding-right: 35px;
+    padding-bottom: 5em;
+
+    :after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      background: ${defaultTheme.palette.primary.light}
+    }
+  }
+
+  ${mqXsLandscape()} {
+    padding-right: 0px;
+    padding-bottom: 1em;
+
+    :after {
+      display: none;
+    }
+  }
+`
+
+const AsideRight = styled(Grid)`
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  ${defaultTheme.breakpoints.up('xs')} {
+    padding: 20px 0 0 25px;
+  };
+
+  ${mqXsLandscape()} {
+    padding-left: 0px;
+  }
+`
 
 const Form = styled('form')`
   > * {
@@ -71,8 +114,7 @@ function App() {
   // getValues periodically retrieves the form data
   usePersistForm({ value: watch(), localStorageKey: FormDataKey });
 
-  const checkBoxState = useState(formDataPersist?.check)
-  const [activeStepState, setActiveStepState] = useState(0)
+  const [activeStepState, setActiveStepState] = useState(0) //temp
   const isLastSteps = (activeStepState + 1) === DynModules.length;
 
   const handleNextStepState = useCallback(() => {
@@ -96,12 +138,12 @@ function App() {
 
     // Be careful, type safe no guarantee
     const Component =
-      DynModules[activeStepState].component as React.ComponentType<PickGridProps & {
+      DynModules[activeStepState].component as React.ComponentType<{
         [k: string]: Any;
       }>
 
-    return <Component checkBoxState={checkBoxState} md={8} />
-  }, [activeStepState, checkBoxState, isLastSteps])
+    return <Component />
+  }, [activeStepState, isLastSteps])
 
   return (
     <AppContainer>
@@ -125,15 +167,15 @@ function App() {
 
           <FormProvider {...form}>
             <Form onSubmit={onSubmit(handleSubmit)}>
-              <Suspense fallback={<div>Loading...</div>}>
-                {renderStepContent}
-              </Suspense>
+              <AsideLeft md={8} item>
+                <Suspense fallback={<div>Loading...</div>}>
+                  {renderStepContent}
+                </Suspense>
+              </AsideLeft>
 
-              <Summary
-                checkBoxState={checkBoxState}
-                md={4}
-                onClick={handleNextStepState}
-              />
+              <AsideRight md={4} item>
+                <Summary onClick={handleNextStepState} />
+              </AsideRight>
             </Form>
           </FormProvider>
         </Grid>
