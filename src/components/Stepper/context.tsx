@@ -11,4 +11,9 @@ const StepperContext = React.createContext<TypeStepperContext>({
   orientation: "horizontal",
   total: 0,
 })
-export default StepperContext
+const useStepperContext = () => React.useContext(StepperContext);
+
+export {
+  StepperContext,
+  useStepperContext
+}

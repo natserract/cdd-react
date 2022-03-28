@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import Checkbox from 'src/components/Checkbox';
 import Grid, { GridProps } from 'src/components/Grid';
@@ -10,6 +10,7 @@ import Validation from 'src/static/validation';
 import CheckOutlined from '@ant-design/icons/CheckOutlined'
 import CloseOutlined from '@ant-design/icons/CloseOutlined'
 import { mqXsLandscape } from 'src/themes/breakpoints';
+import Business from 'src/static/business'
 
 import Title from './Title';
 
@@ -58,6 +59,7 @@ type DeliveryDetailsProps = {}
 
 const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
   const { Regex, Rules } = Validation
+  const { Dropship } = Business
 
   const {
     control,
@@ -105,6 +107,10 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
     const fields = ['dropshipperName', 'dropshipperPhoneNumber']
 
     setCheckedState(isChecked)
+    setValue(
+      'droshipingFee',
+      isChecked ? Dropship.fee.number : 0
+    )
 
     if (!isChecked) {
       resetInputs(fields)
@@ -113,7 +119,7 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
       // But unchecked, value stored in ref
       fields.map(v => setValue(v, inputDropshipperRef.current[v]))
     }
-  }, [resetInputs, setCheckedState, setValue])
+  }, [Dropship.fee.number, resetInputs, setValue])
 
   const handleChangeTextArea = useCallback(() => {
     const value = String(watch('address'))
@@ -134,11 +140,21 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
     }
   }, [])
 
+  // Set default dropshipping fee
+  useEffect(() => {
+    if (checkboxState) {
+      setValue(
+        'droshipingFee',
+        Dropship.fee.number,
+      )
+    }
+  }, [Dropship.fee.number, checkboxState, setValue])
+
   return (
     <React.Fragment>
       <DeliveryDetailsHeader item>
         <Grid md={6} item>
-          <Title color='textPrimary' component='h1' variant='h1' bolder>
+          <Title component='h1'>
             Delivery Details
           </Title>
         </Grid>

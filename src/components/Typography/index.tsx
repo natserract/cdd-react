@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 import { defaultTheme } from "src/themes/default";
-import { Any } from 'src/types/share';
+import { Any, HTMLAttributes } from 'src/types/share';
 
 type TypographyRootProps = {
   color?: "primary" | "textPrimary" | "secondary" | "textSecondary" | "error" | "hint",
@@ -31,9 +31,9 @@ const TypographyRoot = styled('span').withConfig<TypographyRootProps>({
   ...sx,
 }))
 
-type TypographyProps = {
+export type TypographyProps = {
   children?: React.ReactNode,
-} & TypographyRootProps
+} & TypographyRootProps & Partial<HTMLAttributes<HTMLSpanElement>>
 
 const Typography = React.forwardRef<React.Component<{}, Any, Any>, TypographyProps>((props, ref) => {
   const {

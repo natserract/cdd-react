@@ -17,6 +17,7 @@ import { usePersistForm } from './hooks/usePersistForm';
 import Config from './static/config';
 import { getItem } from './utils/storage';
 import { mqXsLandscape } from './themes/breakpoints';
+import Business from './static/business';
 
 const AppContainer = styled.div`
   background-color: #fff9e4;
@@ -105,6 +106,7 @@ function App() {
     mode: 'onChange',
     defaultValues: {
       ...formDataPersist,
+      costOfGoods: 500000,
     },
     reValidateMode: 'onSubmit'
   })
@@ -116,16 +118,9 @@ function App() {
   // getValues periodically retrieves the form data
   usePersistForm({ value: watch(), localStorageKey: FormDataKey });
 
-  const [activeStepState, setActiveStepState] = useState(0) //temp
+  const stepState = useState(0)
+  const [activeStepState,] = stepState
   const isLastSteps = (activeStepState + 1) === DynModules.length;
-
-  const handleNextStepState = useCallback(() => {
-    setActiveStepState((prev) => prev + 1);
-  }, [])
-
-  const handleBackStepState = useCallback(() => {
-    setActiveStepState((prev) => prev - 1);
-  }, [])
 
   const handleSubmit = (async () => {
     window.console.log('submitted')
@@ -146,6 +141,8 @@ function App() {
 
     return <Component />
   }, [activeStepState, isLastSteps])
+
+  console.log('watch', watch())
 
   return (
     <AppContainer>
@@ -176,7 +173,7 @@ function App() {
               </AsideLeft>
 
               <AsideRight md={4} item>
-                <Summary onClick={handleNextStepState} />
+                <Summary stepState={stepState} />
               </AsideRight>
             </Form>
           </FormProvider>

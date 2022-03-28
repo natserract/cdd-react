@@ -97,7 +97,8 @@ const ButtonRoot = styled('button').withConfig<ButtonRootProps>({
 
   ...(variant === 'outlined' && {
     padding: '5px 15px',
-    border: `1px solid rgba(255, 255, 255, 0.23)`
+    border: '1px solid rgba(0, 0, 0, 0.15)',
+    backgroundColor: 'transparent',
   }),
 
   // Background color
@@ -147,7 +148,7 @@ const ButtonEndIcon = styled('span').withConfig<ButtonIconProps>({
   ...commonIconStyles(size),
 }));
 
-type ButtonProps = {
+export type ButtonProps = {
   children?: React.ReactNode,
 } & ButtonRootProps & ButtonIconProps & Partial<React.ButtonHTMLAttributes<HTMLButtonElement>>
 

@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
 import styled from "styled-components";
 
-import StepperContext from './context'
+import { StepperContext, useStepperContext } from './context'
 export {
-  StepperContext
+  StepperContext,
+  useStepperContext
 }
 
 type ChildrenNode = {

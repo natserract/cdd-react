@@ -10,12 +10,14 @@ import InputBase from '../InputBase'
 import { InputBaseProps } from '../InputBase/types'
 import Typography from '../Typography'
 
-const TextFieldContainer = styled.div.withConfig({
+const TextFieldContainer = styled.div.withConfig<{ hidden?: boolean }>({
   displayName: 'TextFieldContainer'
 })`
   display: flex;
   flex-direction: column;
   position: relative;
+
+  visibility: ${props => props.hidden ? 'hidden' : 'visible'};
 `
 
 const TextFieldLabel = styled.label`
@@ -196,6 +198,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
     errors,
     activeIconOnChange,
     disabled,
+    hidden,
     ...other
   } = props
 
@@ -271,7 +274,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
   )
 
   return (
-    <TextFieldContainer ref={handleRef}>
+    <TextFieldContainer ref={handleRef} hidden={hidden}>
       <TextFieldRoot
         className={clsx(classes, className)}
         color={color}
