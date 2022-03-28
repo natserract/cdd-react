@@ -1,9 +1,5 @@
+import { Any } from "src/types/share"
 import { formatMoney } from "src/utils/format"
-
-type ShipmentCategory =
-    | "GO-SEND"
-    | "JNE"
-    | "Personal Courier"
 
 class Business {
     static Dropship = {
@@ -13,32 +9,44 @@ class Business {
         }
     }
 
-    public Shipment = {
+    static Shipment = {
         GoSend: {
             name: "GO-SEND",
             price: 15000,
+            estimate: 'today',
         },
         JNE: {
             name: "JNE",
             price: 9000,
+            estimate: '2 days',
         },
         PersonalCourier: {
             name: "Personal Courier",
             price: 29000,
+            estimate: '1 day',
         }
     }
 
-    shipmentPrice(category: ShipmentCategory) {
-        switch (category) {
-            case 'GO-SEND':
-                return this.Shipment.GoSend.price
+    static Payment = ['e-Wallet', 'Bank Transfer', 'Virtual Account']
+}
 
-            case 'JNE':
-                return this.Shipment.JNE.price
+type ShipmentCategory =
+    | "GO-SEND"
+    | "JNE"
+    | "Personal Courier"
 
-            case 'Personal Courier':
-                return this.Shipment.PersonalCourier.price
-        }
+export const getShipmentData = (category: ShipmentCategory) => {
+    const { Shipment } = Business
+
+    switch (category) {
+        case 'GO-SEND':
+            return Shipment.GoSend
+
+        case 'JNE':
+            return Shipment.JNE
+
+        case 'Personal Courier':
+            return Shipment.PersonalCourier
     }
 }
 

@@ -4,19 +4,24 @@ import { defaultTheme } from "src/themes/default";
 import { Any, HTMLAttributes } from 'src/types/share';
 
 type TypographyRootProps = {
-  color?: "primary" | "textPrimary" | "secondary" | "textSecondary" | "error" | "hint",
+  color?: "primary" | "textPrimary" | "secondary" | "textSecondary" | "error" | "hint" | "success",
   gutterBottom?: boolean
   component?: string | React.ComponentType,
   sx?: React.CSSProperties
   variant?: keyof typeof defaultTheme.typography
   bolder?: boolean,
+  display?: 'block' | 'inline'
 }
 
 const TypographyRoot = styled('span').withConfig<TypographyRootProps>({
   displayName: 'Typography',
-})(({ sx, color, gutterBottom, bolder, variant }) => ({
+})(({ sx, color, gutterBottom, bolder, variant, display }) => ({
   margin: 0,
   fontWeight: bolder ? 'bold' : 'normal',
+
+  ...(display === 'block' && {
+    display: 'block'
+  }),
 
   ...(variant && defaultTheme.typography[variant]),
 

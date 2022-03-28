@@ -5,13 +5,24 @@ import Button from 'src/components/Button'
 import { formatMoney } from 'src/utils/format';
 import { useFormContext } from 'react-hook-form';
 import React, { useCallback } from 'react';
-import Business from 'src/static/business';
+import Business, { getShipmentData } from 'src/static/business';
 import { isCurrentStepOf } from 'src/utils/step';
 import { Any } from 'src/types/share';
 
 const totalPrice = (values: { [k: string]: Any }) => {
   return Object.values(values).reduce((acc, curr) => acc + curr)
 }
+
+const shipmentEstimate = (getValues) => {
+  const { Shipment } = Business;
+  const defaultValue = Shipment.GoSend.name
+
+  return `
+      ${getShipmentData(getValues('shipmentName') || defaultValue).estimate} by 
+      ${getValues('shipmentName') || defaultValue}
+    `
+}
+
 
 const SxItemSummaryContainer = {
   "& > div:not(:last-child)": {
@@ -35,6 +46,22 @@ const SxItemSummaryTotal = {
   }
 }
 
+const SxItemDeliveryEstimation = {
+  position: 'relative',
+  margin: '30px 0 0',
+  padding: '20px 0 0',
+
+  "&:before": {
+    content: "''",
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: 2,
+    width: 100,
+    background: '#cacaca',
+  }
+}
+
 type SummaryProps = {
   stepState: [number, React.Dispatch<React.SetStateAction<number>>];
 }
@@ -54,6 +81,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
     setActiveStepState((prev) => prev + 1);
   }, [setActiveStepState])
 
+
   const getTotalPrice = {
     costOfGoods: getValues('costOfGoods') || 0,
     droshipingFee: getValues('droshipingFee') || 0,
@@ -70,16 +98,22 @@ const Summary: React.FC<SummaryProps> = (props) => {
             10 items purchased
           </Typography>
         </Typography>
+
         {/* Delivery Estimation */}
-        {/* <Grid sx={SxItemSummaryText} item>
-            <Grid md={6} sm={6} xs={6} item>
-              Cost of goods
+        {isPaymentStep && (
+          <Grid sx={SxItemDeliveryEstimation} item>
+            <Grid item>
+              <Typography sx={{ marginBottom: '5px', display: 'block' }}>
+                Delivery Estimation
+              </Typography>
             </Grid>
-            <Grid md={6} sm={6} xs={6} item>
-              <Typography bolder>500,000</Typography>
+            <Grid item>
+              <Typography color='success' variant='h6' bolder>
+                {shipmentEstimate(getValues)}
+              </Typography>
             </Grid>
-          </Grid> */}
-        {isPaymentStep && 'Delivery Estimation'}
+          </Grid>
+        )}
         {/* End Delivery Estimation */}
       </Grid>
 

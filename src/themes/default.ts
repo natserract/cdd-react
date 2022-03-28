@@ -50,6 +50,7 @@ const defaultTheme = {
       textPrimary: primary,
       secondary: '#6E6E6E',
       textSecondary: "#FF5C93",
+      success,
       error,
       hint: '#B9B9B9',
     },
