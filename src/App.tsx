@@ -50,16 +50,6 @@ const AsideLeft = styled(Grid)`
   ${defaultTheme.breakpoints.up('xs')} {
     padding-right: 35px;
     padding-bottom: 5em;
-
-    :after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: 1px;
-      background: ${defaultTheme.palette.primary.light}
-    }
   }
 
   ${mqXsLandscape()} {
@@ -74,18 +64,29 @@ const AsideLeft = styled(Grid)`
 
 const AsideRight = styled(Grid)`
   height: 100%;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 
   ${defaultTheme.breakpoints.up('xs')} {
     padding: 20px 0 0 25px;
-  };
+
+    :before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      background: ${defaultTheme.palette.primary.light}
+    }
+  }
 
   ${mqXsLandscape()} {
     padding-left: 0px;
   }
+
 `
 
 const Form = styled('form')`

@@ -8,6 +8,7 @@ import React, { useCallback } from 'react';
 import Business, { getShipmentData } from 'src/static/business';
 import { isLastStep } from 'src/utils/step';
 import { Any } from 'src/types/share';
+import DynModules from 'src/DynModules';
 
 const totalPrice = (values: { [k: string]: Any }) => {
   return Object.values(values).reduce((acc, curr) => acc + curr)
@@ -87,6 +88,35 @@ const Summary: React.FC<SummaryProps> = (props) => {
     shipmentPrice: getValues('shipmentPrice') || 0,
   }
 
+  const renderButton = () => {
+    const buttonText = () => {
+      const stepName = DynModules[activeStepState + 1].name
+      const paymentMethod = getValues('paymentMethod')
+
+      switch (activeStepState) {
+        case 0:
+          return `Continue To ${stepName}`
+        case 1:
+          return `${paymentMethod ? `Pay with ${getValues('paymentMethod')}` : 'Loading...'}`
+      }
+    }
+
+    if (lastStep) return <React.Fragment />
+
+    return (
+      <Button
+        color='primary'
+        disabled={!isFormValid}
+        size='large'
+        variant='contained'
+        fullWidth
+        onClick={handleNextStepState}
+      >
+        {buttonText()}
+      </Button>
+    )
+  }
+
   return (
     <React.Fragment>
       <Grid sx={{ paddingBottom: 30 }} item>
@@ -133,7 +163,6 @@ const Summary: React.FC<SummaryProps> = (props) => {
 
       <Grid item>
         <Grid sx={SxItemSummaryContainer} item>
-
           {/* Cost of goods */}
           <Grid sx={SxItemSummaryText} item>
             <Grid md={6} sm={6} xs={6} item>
@@ -186,18 +215,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
           {/* End Total */}
         </Grid>
 
-        {/* Action */}
-        {!lastStep && <Button
-          color='primary'
-          disabled={!isFormValid}
-          size='large'
-          variant='contained'
-          fullWidth
-          onClick={handleNextStepState}
-        >
-          Continue To Payment
-        </Button>}
-        {/* End Action */}
+        {renderButton()}
       </Grid>
     </React.Fragment>
   )
