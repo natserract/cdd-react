@@ -26,10 +26,20 @@ const TitleRoot = styled(Typography)`
 
 type TitleProps = {} & Omit<TypographyProps, 'color' | 'bolder' | 'variant'>
 
-const Title: React.FC<TitleProps> = (props) => (
-  <TitleRoot color='textPrimary' component={props.component} variant='h1' bolder>
-    {props.children}
-  </TitleRoot>
-)
+const Title: React.FC<TitleProps> = (props) => {
+  const { component, ...other } = props
+
+  return (
+    <TitleRoot
+      color='textPrimary'
+      component={component}
+      variant='h1'
+      bolder
+      {...other}
+    >
+      {props.children}
+    </TitleRoot>
+  )
+}
 
 export default Title

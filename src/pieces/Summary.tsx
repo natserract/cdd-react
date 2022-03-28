@@ -6,9 +6,8 @@ import { formatMoney } from 'src/utils/format';
 import { useFormContext } from 'react-hook-form';
 import React, { useCallback } from 'react';
 import Business, { getShipmentData } from 'src/static/business';
-import { isCurrentStepOf, isLastStep } from 'src/utils/step';
+import { isLastStep } from 'src/utils/step';
 import { Any } from 'src/types/share';
-import { useStepContext } from 'src/components/Step';
 
 const totalPrice = (values: { [k: string]: Any }) => {
   return Object.values(values).reduce((acc, curr) => acc + curr)

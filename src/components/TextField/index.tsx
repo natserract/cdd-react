@@ -12,13 +12,15 @@ import Typography from '../Typography'
 
 const TextFieldContainer = styled.div.withConfig<{ hidden?: boolean }>({
   displayName: 'TextFieldContainer'
-})`
-  display: flex;
-  flex-direction: column;
-  position: relative;
+})(({ hidden }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  position: 'relative',
 
-  visibility: ${props => props.hidden ? 'hidden' : 'visible'};
-`
+  ...(hidden && {
+    display: 'none'
+  }),
+}))
 
 const TextFieldLabel = styled.label`
   position: absolute;

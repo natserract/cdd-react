@@ -9,6 +9,7 @@ import ArrowLeftOutlined from '@ant-design/icons/ArrowLeftOutlined'
 import { useForm, FormProvider } from 'react-hook-form';
 import Grid from 'src/components/Grid';
 import { Summary } from 'src/pieces'
+import Finish from 'src/pieces/Finish'
 
 import DynModules from './DynModules'
 import { defaultTheme } from './themes/default';
@@ -17,7 +18,6 @@ import { usePersistForm } from './hooks/usePersistForm';
 import Config from './static/config';
 import { getItem } from './utils/storage';
 import { mqXsLandscape } from './themes/breakpoints';
-import Business from './static/business';
 
 const AppContainer = styled.div`
   background-color: #fff9e4;
@@ -127,11 +127,7 @@ function App() {
   })
 
   const renderStepContent = useMemo(() => {
-    if (isLastSteps) return (
-      <div>
-        Finish
-      </div>
-    )
+    if (isLastSteps) return <Finish />
 
     // Be careful, type safe no guarantee
     const Component =

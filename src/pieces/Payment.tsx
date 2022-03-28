@@ -14,7 +14,14 @@ import { formatMoney } from 'src/utils/format';
 import Title from './Title'
 
 const PaymentContainer = styled(Grid)(() => ({}));
-const PaymentGroup = styled(Grid)(() => ({}))
+const PaymentGroup = styled(Grid)(({ theme }) => ({
+  [`${theme.breakpoints.down('xs')}`]: {
+    [`${PaymentItem}`]: {
+      marginBottom: 30,
+    }
+  }
+}))
+
 const PaymentItem = styled(Grid)(() => ({
   marginTop: 35,
 
@@ -159,7 +166,6 @@ const Payment: React.FC<PaymentProps> = () => {
   return (
     <PaymentContainer item>
       <PaymentGroup item>
-
         <Grid item>
           <Title component='h2'>Shipment</Title>
 
