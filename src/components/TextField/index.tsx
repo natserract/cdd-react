@@ -221,7 +221,6 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref
 
   useEffect(() => {
     if (control._formValues[name]) {
-      console.log('control', control._formValues[name])
       setIsActive(true);
       setClasses('focus')
     }

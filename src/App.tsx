@@ -43,6 +43,7 @@ const AppContent = styled(Widget)(({ theme }) => ({
 
 const AsideLeft = styled(Grid)`
   position: relative;
+  padding-top: 25px;
   padding-bottom: 2em;
 
   ${defaultTheme.breakpoints.up('xs')} {
@@ -104,7 +105,8 @@ function App() {
     mode: 'onChange',
     defaultValues: {
       ...formDataPersist,
-    }
+    },
+    reValidateMode: 'onSubmit'
   })
   const {
     watch,

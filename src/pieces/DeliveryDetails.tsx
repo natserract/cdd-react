@@ -14,7 +14,7 @@ import { mqXsLandscape } from 'src/themes/breakpoints';
 import Title from './Title';
 
 const DeliveryDetailsHeader = styled(Grid)`
-  margin: 25px 0 45px;
+  margin-bottom: 45px;
 
   > div {
     height: 100%;
@@ -67,7 +67,7 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
     unregister,
   } = useFormContext()
 
-  const wordCounterRef = useRef(120)
+  const wordCounterRef = useRef(Rules.maxLenMultiline)
   const inputDropshipperRef = useRef({})
 
   const checkboxState = watch('check');
@@ -201,7 +201,8 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
             disabled={!checkedState}
             label="Dropshipper Name"
             name='dropshipperName'
-            required={checkedState}
+            required={checkboxState}
+            rules={{ validate: (v) => Boolean(v) }}
             onChange={handleChangeDropshipText}
             {...textFieldDropshipperProps('dropshipperName')}
           />
@@ -211,9 +212,10 @@ const DeliveryDetails: React.FC<DeliveryDetailsProps> = () => {
             label="Dropshipper Phone Number"
             maxLength={Rules.maxLen}
             name='dropshipperPhoneNumber'
-            required={checkedState}
+            required={checkboxState}
             rules={{
               pattern: Regex.phonePattern,
+              validate: (v) => Boolean(v)
             }}
             type='tel'
             onChange={handleChangeDropshipText}

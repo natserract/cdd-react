@@ -7,6 +7,7 @@ import { formatMoney } from 'src/utils/format';
 import { mqXsLandscape, } from 'src/themes/breakpoints';
 import { useFormContext } from 'react-hook-form';
 import React from 'react';
+import Business from 'src/static/business';
 
 const SxItemSummaryContainer = {
   "& > div:not(:last-child)": {
@@ -35,12 +36,16 @@ type SummaryProps = {
 }
 
 const Summary: React.FC<SummaryProps> = (props) => {
-  const { watch } = useFormContext()
+  const { Dropship } = Business
+
+  const { watch, formState: { errors, isValid } } = useFormContext()
+  const isFormValid = !Object.entries(errors).length && isValid
   const checkedState = watch('check');
 
   const handleClickButton = (e) => {
     props.onClick(e)
   }
+
 
   return (
     <React.Fragment>
@@ -66,14 +71,16 @@ const Summary: React.FC<SummaryProps> = (props) => {
           {/* End Cost of goods */}
 
           {/* Dropshiping fee */}
-          <Grid sx={SxItemSummaryText} item>
-            <Grid md={6} sm={6} xs={6} item>
-              Dropshiping Fee
+          {checkedState && (
+            <Grid sx={SxItemSummaryText} item>
+              <Grid md={6} sm={6} xs={6} item>
+                Dropshiping Fee
+              </Grid>
+              <Grid md={6} sm={6} xs={6} item>
+                <Typography bolder>{formatMoney(Dropship.fee.number)}</Typography>
+              </Grid>
             </Grid>
-            <Grid md={6} sm={6} xs={6} item>
-              <Typography bolder>{checkedState ? formatMoney(5900) : '-'}</Typography>
-            </Grid>
-          </Grid>
+          )}
           {/* End Dropshiping fee */}
 
           {/* Total */}
@@ -82,7 +89,9 @@ const Summary: React.FC<SummaryProps> = (props) => {
               <Typography color='textPrimary' variant='h3' bolder>Total</Typography>
             </Grid>
             <Grid md={6} sm={6} xs={6} item>
-              <Typography color='textPrimary' variant='h3' bolder>505,900</Typography>
+              <Typography color='textPrimary' variant='h3' bolder>
+                {formatMoney(500000 + (checkedState && Dropship.fee.number))}
+              </Typography>
             </Grid>
           </Grid>
           {/* End Total */}
@@ -91,6 +100,7 @@ const Summary: React.FC<SummaryProps> = (props) => {
         {/* Action */}
         <Button
           color='primary'
+          disabled={!isFormValid}
           size='large'
           variant='contained'
           fullWidth
