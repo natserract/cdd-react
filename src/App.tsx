@@ -1,25 +1,183 @@
-import React from 'react';
-import logo from './assets/logo.svg';
-import './styles/App.css';
+import React, { useState, useMemo, Suspense } from 'react';
+import styled from 'styled-components'
+import Widget from 'src/components/Widget'
+import Stepper from 'src/components/Stepper'
+import Step from 'src/components/Step';
+import StepLabel from 'src/components/StepLabel';
+import Button from 'src/components/Button'
+import ArrowLeftOutlined from '@ant-design/icons/ArrowLeftOutlined'
+import { useForm, FormProvider } from 'react-hook-form';
+import Grid from 'src/components/Grid';
+import { Summary } from 'src/pieces'
+import Finish from 'src/pieces/Finish'
+
+import DynModules from './DynModules'
+import { defaultTheme } from './themes/default';
+import { Any } from './types/share';
+import { usePersistForm } from './hooks/usePersistForm';
+import Config from './static/config';
+import { getItem } from './utils/storage';
+import { mqXsLandscape } from './themes/breakpoints';
+
+const AppContainer = styled.div`
+  background-color: #fff9e4;
+  padding: 50px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${defaultTheme.breakpoints.down('xs')} {
+    padding: 20px;
+  }
+`
+const AppContent = styled(Widget)(({ theme }) => ({
+  padding: 30,
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: 15,
+
+  [`${theme.breakpoints.down('xs')}`]: {
+    padding: '20px 10px',
+  }
+}))
+
+const AsideLeft = styled(Grid)`
+  position: relative;
+  padding-top: 25px;
+  padding-bottom: 2em;
+
+  ${defaultTheme.breakpoints.up('xs')} {
+    padding-right: 35px;
+    padding-bottom: 5em;
+  }
+
+  ${mqXsLandscape()} {
+    padding-right: 0px;
+    padding-bottom: 1em;
+
+    :after {
+      display: none;
+    }
+  }
+`
+
+const AsideRight = styled(Grid)`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+
+  ${defaultTheme.breakpoints.up('xs')} {
+    padding: 20px 0 0 25px;
+
+    :before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 1px;
+      background: ${defaultTheme.palette.primary.light}
+    }
+  }
+
+  ${mqXsLandscape()} {
+    padding-left: 0px;
+  }
+
+`
+
+const Form = styled('form')`
+  > * {
+    min-height: 280px;
+
+    ${defaultTheme.breakpoints.up('sm')} {
+      min-height: 500px;
+    }
+  }
+`
 
 function App() {
+  const { FormDataKey } = Config;
+
+  const formDataPersist = getItem(FormDataKey)
+  const form = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      ...formDataPersist,
+      costOfGoods: 500000,
+    },
+    reValidateMode: 'onSubmit'
+  })
+  const {
+    watch,
+    handleSubmit: onSubmit,
+  } = form
+
+  // getValues periodically retrieves the form data
+  usePersistForm({ value: watch(), localStorageKey: FormDataKey });
+
+  const stepState = useState(0)
+  const [activeStepState,] = stepState
+  const isLastSteps = (activeStepState + 1) === DynModules.length;
+
+  const handleSubmit = (async () => {
+    window.console.log('values', form.getValues())
+  })
+
+  const renderStepContent = useMemo(() => {
+    if (isLastSteps) return <Finish />
+
+    // Be careful, type safe no guarantee
+    const Component =
+      DynModules[activeStepState].component as React.ComponentType<{
+        [k: string]: Any;
+      }>
+
+    return <Component />
+  }, [activeStepState, isLastSteps])
+
+  // Debug values
+  // console.log('watch', watch())
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContainer>
+      <Stepper activeStep={activeStepState}>
+        {DynModules.map(({ key, name }) => (
+          <Step key={key}>
+            <StepLabel variant='numbering'>
+              {name}
+            </StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+
+      <AppContent fullWidth>
+        <Grid container fluid>
+          <Grid item>
+            <Button startIcon={<ArrowLeftOutlined />} noPadding>
+              Back to cart
+            </Button>
+          </Grid>
+
+          <FormProvider {...form}>
+            <Form onSubmit={onSubmit(handleSubmit)}>
+              <AsideLeft md={8} item>
+                <Suspense fallback={<div>Loading...</div>}>
+                  {renderStepContent}
+                </Suspense>
+              </AsideLeft>
+
+              <AsideRight md={4} item>
+                <Summary stepState={stepState} />
+              </AsideRight>
+            </Form>
+          </FormProvider>
+        </Grid>
+      </AppContent>
+    </AppContainer>
   );
 }
 
