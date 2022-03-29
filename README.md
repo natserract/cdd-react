@@ -3,8 +3,8 @@ Component-Driven Development (CDD) is a development methodology that anchors the
 
 Additionally, component-driven approach encourages design and development of components independently from the application's code. This leads to a better software architecture and can speed up the development process significantly due to a much shorter feedback loop. It encourages developers write reusable, modular components, and document them before even using in the application. 
 
+![image](./cover.png)
 
-![image](screenshot.png)
 ## Components
 - **[Stepper](src/components/Stepper)**, convey progress through numbered steps. It provides a wizard-like workflow.
 - **[Step Icon](src/components/StepIcon)**, component support for Stepper, displayed any icon element
