@@ -9,9 +9,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Theme>
-            <App />
-        </Theme>
+        <Theme><App /></Theme>
     </React.StrictMode>,
     document.getElementById('root')
 );
