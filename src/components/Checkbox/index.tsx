@@ -6,7 +6,7 @@ import { defaultTheme } from "src/themes/default";
 import InputBase from '../InputBase'
 import { InputBaseProps } from '../InputBase/types'
 
-type CheckboxProps = {
+export type CheckboxProps = {
   checked: boolean
   variant?: "normal" | "outlined"
   label?: string;

@@ -5,6 +5,7 @@ import { defaultTheme } from "src/themes/default";
 import alpha from 'color-alpha'
 
 type Size = "small" | "medium" | "large"
+
 const commonIconStyles = (size: Size) => ({
   ...(size === 'small' && {
     '& > *:nth-of-type(1)': {
@@ -42,6 +43,7 @@ const commonButtonSizeStyles = (size: Size) => ({
 })
 
 type ButtonColor = "inherit" | "primary" | "secondary" | "error" | "success" | "info"
+
 type ButtonRootProps = {
   color?: ButtonColor,
   component?: string | React.ComponentType,

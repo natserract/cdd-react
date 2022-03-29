@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { Any } from 'src/types/share';
 import styled from "styled-components";
 
 import { StepperContext, useStepperContext } from './context'
@@ -11,14 +12,13 @@ type ChildrenNode = {
   type: string;
   key: string;
   ref: React.Ref<unknown>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props: Record<string, any>
+  props: Record<string, Any>
 }
 
 type StepperRootProps = {
   activeStep: number;
   orientation?: "horizontal",
-  sx?: React.CSSProperties,
+  sx?: React.CSSProperties | { [k: string]: Any },
 }
 
 const StepperRoot = styled('div').withConfig<StepperRootProps>({

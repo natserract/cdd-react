@@ -1,4 +1,5 @@
 import React from 'react'
+import { Any } from 'src/types/share';
 import styled from "styled-components";
 
 type WidgetRootProps = {
@@ -7,7 +8,7 @@ type WidgetRootProps = {
 
   // Used for custom/additional style
   // @see: https://mui.com/system/the-sx-prop/
-  sx?: React.CSSProperties,
+  sx?: React.CSSProperties | { [k: string]: Any },
 }
 
 const WidgetRoot = styled('div').withConfig<WidgetRootProps>({

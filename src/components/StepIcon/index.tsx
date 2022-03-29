@@ -15,7 +15,7 @@ const StepIconRoot = styled('div').withConfig<StepIconRootProps>({
   fontSize: 13,
 }))
 
-type StepIconProps = {
+export type StepIconProps = {
   icon?: React.ReactNode;
 } & StepIconRootProps & Partial<HTMLAttributes<HTMLDivElement>>
 

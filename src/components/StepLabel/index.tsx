@@ -6,6 +6,7 @@ import alpha from 'color-alpha'
 import { useStepContext } from '../Step/context';
 
 type Color = "primary" | "secondary" | "error" | "success" | "info"
+
 type StepLabelRootProps = {
   variant?: 'standard' | 'numbering';
   color?: Color
@@ -58,7 +59,7 @@ const StepNumber = styled('span')<StepNumberProps>(
   })
 )
 
-type StepLabelProps = {
+export type StepLabelProps = {
   children: React.ReactNode;
 } & StepLabelRootProps & Partial<HTMLAttributes<HTMLSpanElement>>
 

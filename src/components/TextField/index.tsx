@@ -145,7 +145,7 @@ const TextFieldRoot = styled(InputBase).withConfig<TextFieldRootProps>({
   ...sx,
 }))
 
-type TextFieldAdornmentRootProps = {
+export type TextFieldAdornmentRootProps = {
   active?: boolean;
   color?: "primary" | "secondary" | "success" | "error" | "info",
   isError?: boolean;
@@ -180,8 +180,7 @@ const TextFieldAdornmentRoot =
   })
   )
 
-
-type TextFieldProps = TextFieldRootProps & InputBaseProps
+export type TextFieldProps = TextFieldRootProps & InputBaseProps
 
 const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
   const {

@@ -36,7 +36,6 @@ const GridRoot = styled('div').attrs<GridRootProps>(({ fluid }) => ({
   ...sx,
 }))
 
-
 type GridColumnProps = {} & BaseProps & Partial<Query>
 
 const GridColumn = styled('div').attrs<GridColumnProps>(({
@@ -86,7 +85,6 @@ const Grid = React.forwardRef<HTMLDivElement, GridProps>((props, ref) => {
     xs,
     sm,
     md,
-
   }
 
   const renderGrid = () => {

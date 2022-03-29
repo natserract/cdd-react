@@ -17,7 +17,6 @@ const DynModules = [
   {
     key: 'finish',
     name: 'Finish',
-    component: Delivery
   },
 ]
 

@@ -13,7 +13,7 @@ export {
   useStepContext,
 }
 
-type StepProps = {
+export type StepProps = {
   children: React.ReactNode;
   icon?: React.ReactNode;
   color?: "primary" | "secondary" | "error" | "success" | "info"
